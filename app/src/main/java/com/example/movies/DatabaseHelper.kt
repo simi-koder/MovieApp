@@ -10,7 +10,7 @@ import java.text.Normalizer
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        const val DB_NAME = "database.db"
+        const val DB_NAME = "new_database.db"
         const val DB_VERSION = 1
     }
 
@@ -83,6 +83,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
 
         val newUserId = db.insert("Uzivatelia", null, values)
+
+//        DEBUG
+        val cursor = db.rawQuery(
+            """
+                SELECT * FROM Uzivatelia
+            """.trimIndent(), null
+        )
+
+        cursor.use {
+            while (it.moveToNext()) {
+                Log.d("DEBUG_USER", it.getString(it.getColumnIndexOrThrow("meno")))
+            }
+        }
+//        END DEBUG
 
         db.close()
         return newUserId

@@ -10,12 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.transition.Visibility
 import com.example.movies.databinding.StartPageBinding
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class StartPage : Fragment() {
     private var _binding: StartPageBinding? = null
     private val binding get() = _binding!!
     private lateinit var dbHelper: DatabaseHelper
     private val nameList: MutableList<String> = mutableListOf()
+
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +37,8 @@ class StartPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dbHelper = DatabaseHelper(requireContext())
+
+        navController = findNavController()
 
         val userNames = listOf(binding.name1, binding.name2, binding.name3, binding.name4, binding.name5, binding.name6, binding.name7, binding.name8, binding.name9, binding.name10)
 
@@ -66,8 +76,23 @@ class StartPage : Fragment() {
             }
             Log.d("NAMES", nameList.toString())
 
-//            TODO: add users to database
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Uložiť?")
+                .setNegativeButton("Nie") { _, _ ->
+                }
+                .setPositiveButton("Áno") { _, _ ->
+                    dbHelper.addUsers(nameList)
+                    navController.navigate(R.id.MovieList)
+                }
+                .show()
+
+//            TODO: check if all users are added everytime, undo back arrow in movie list
+//            TODO: make welcome page one time only
         }
 
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
