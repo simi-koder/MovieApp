@@ -1,5 +1,6 @@
 package com.example.movies
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -82,12 +83,11 @@ class StartPage : Fragment() {
                 }
                 .setPositiveButton("Áno") { _, _ ->
                     dbHelper.addUsers(nameList)
+                    val prefs = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                    prefs.edit().putBoolean("has_seen_onboarding", true).apply()
                     navController.navigate(R.id.MovieList)
                 }
                 .show()
-
-//            TODO: check if all users are added everytime, undo back arrow in movie list
-//            TODO: make welcome page one time only
         }
 
     }

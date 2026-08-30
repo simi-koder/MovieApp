@@ -10,7 +10,7 @@ import java.text.Normalizer
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        const val DB_NAME = "new_database.db"
+        const val DB_NAME = "new2_database.db"
         const val DB_VERSION = 1
     }
 
@@ -73,16 +73,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
     fun addUsers(
         name: List<String>
-    ): Long {
+    ) {
         val db = getWritableDb()
 
-        val values = ContentValues().apply {
-            for (i in name){
-                put("meno", i)
+        for (name in name) {
+            val values = ContentValues().apply {
+                put("meno", name)
             }
-        }
 
-        val newUserId = db.insert("Uzivatelia", null, values)
+            val newUserId = db.insert("Uzivatelia", null, values)
+        }
 
 //        DEBUG
         val cursor = db.rawQuery(
@@ -99,8 +99,42 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 //        END DEBUG
 
         db.close()
-        return newUserId
     }
+
+//    fun delUsersAll(){
+//        val db = getWritableDb()
+//        db.rawQuery(
+//            """
+//                DELETE FROM Uzivatelia;
+//            """.trimIndent(), null
+//        )
+//        db.close()
+//    }
+
+    fun getUsers (): List<String> {
+        val db = getReadableDb()
+
+        val cursor = db.rawQuery(
+            """
+                SELECT id_user, meno FROM Uzivatelia
+                ORDER BY id_user ASC
+            """.trimIndent(), null
+        )
+
+        val names = mutableListOf<String>()
+
+        cursor.use {
+            while (it.moveToNext()) {
+                names.add(it.getString(it.getColumnIndexOrThrow("meno")))
+            }
+        }
+        Log.d("USER_NAMES", names.toString())
+
+        db.close()
+        return names
+    }
+
+//    TODO: pridat pridavanie do videl tabulky
 
     fun getAllMovies(): List<MovieFull> {
         val db = getReadableDb()

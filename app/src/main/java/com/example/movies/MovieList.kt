@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -69,7 +70,42 @@ class MovieList : Fragment() {
 
         binding.textViewFilter.setOnClickListener {
             binding.filterOptions.visibility =
-                if (binding.filterOptions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                if (binding.filterOptions.visibility == View.VISIBLE) {
+                    View.GONE
+                } else {
+                    val userNames = dbHelper.getUsers()
+                    val seenChecks = listOf(
+                        binding.videl1, binding.videl2, binding.videl3, binding.videl4, binding.videl5,
+                        binding.videl6, binding.videl7, binding.videl8, binding.videl9, binding.videl10
+                    )
+
+//                    var lastCheckId = R.id.videl1
+
+                    userNames.forEachIndexed { i, name ->
+                        seenChecks[i].apply {
+                            visibility = View.VISIBLE
+                            text = name
+                        }
+                        Log.d("NAME_FOR_EACH", name)
+//                        lastCheckId = seenChecks[i].id
+                    }
+
+//                    TODO: pridat poslednemu cloveku constraint
+
+                    if (userNames.size >= 2) {
+                        binding.videneSpoluCheck.visibility = View.VISIBLE
+//
+//                        ConstraintSet().apply {
+//                            clone(binding.filterOptions)
+//                            connect(R.id.videneSpoluCheck, ConstraintSet.START, lastCheckId, ConstraintSet.END)
+//                            connect(R.id.videneSpoluCheck, ConstraintSet.TOP, lastCheckId, ConstraintSet.TOP)
+//                            connect(R.id.videneSpoluCheck, ConstraintSet.BOTTOM, lastCheckId, ConstraintSet.BOTTOM)
+//                            connect(R.id.videneSpoluCheck, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+//                            applyTo(binding.filterOptions)
+//                        }
+                    }
+                    View.VISIBLE
+                }
         }
 
 
@@ -81,9 +117,9 @@ class MovieList : Fragment() {
             binding.directorText.text?.clear()
             binding.searchBarText.text?.clear()
 
-            // vyresetuj checkboxy
-            binding.videlSimiCheck.isChecked = false
-            binding.videlaTerkaCheck.isChecked = false
+//            // vyresetuj checkboxy
+//            binding.videlSimiCheck.isChecked = false
+//            binding.videlaTerkaCheck.isChecked = false
             binding.videneSpoluCheck.isChecked = false
             binding.colorCheck.isChecked = false
             binding.grayscaleCheck.isChecked = false
@@ -147,8 +183,8 @@ class MovieList : Fragment() {
 
         binding.searchFilterBtn.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val videlSimi = binding.videlSimiCheck.isChecked
-                val videlaTerka = binding.videlaTerkaCheck.isChecked
+//                val videlSimi = binding.videlSimiCheck.isChecked
+//                val videlaTerka = binding.videlaTerkaCheck.isChecked
                 val videneSpolu = binding.videneSpoluCheck.isChecked
                 val color = binding.colorCheck.isChecked
                 val grayscale = binding.grayscaleCheck.isChecked
@@ -156,8 +192,8 @@ class MovieList : Fragment() {
 
                 val filteredMovies = dbHelper.getMoviesByFilters(
                     genreListRaw = selectedGenres,
-                    videlSimi = videlSimi,
-                    videlaTerka = videlaTerka,
+//                    videlSimi = videlSimi,
+//                    videlaTerka = videlaTerka,
                     videneSpolu = videneSpolu,
                     year = yearInputText,
                     rating = ratingInputText,

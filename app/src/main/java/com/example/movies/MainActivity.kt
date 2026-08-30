@@ -1,6 +1,7 @@
 package com.example.movies
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.NavController
 import com.example.movies.databinding.ActivityMainBinding
+import com.example.movies.databinding.StartPageBinding
 
 
 @SuppressLint("WrongViewCast")
@@ -42,11 +44,24 @@ class MainActivity : AppCompatActivity() {
         }
         setSupportActionBar(binding.toolbar)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         navController = navHostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val hasSeenOnboarding = prefs.getBoolean("has_seen_onboarding", false)
+
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        navGraph.setStartDestination(
+            if (hasSeenOnboarding) R.id.MovieList else R.id.StartPage
+        )
+
+        navController.graph = navGraph
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.MovieList, R.id.StartPage)
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 

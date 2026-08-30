@@ -10,8 +10,10 @@
         android:name="com.example.movies.StartPage"
         tools:layout="@layout/start_page">
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/MovieList" />
+            android:id="@+id/action_onboarding_to_movieList"
+            app:destination="@id/MovieList"
+            app:popUpTo="@id/StartPage"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
