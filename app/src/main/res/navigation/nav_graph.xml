@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/StartPage">
+
+    <fragment
+        android:id="@+id/StartPage"
+        android:name="com.example.movies.StartPage"
+        tools:layout="@layout/start_page">
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/MovieList" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/MovieList"
+        android:name="com.example.movies.MovieList"
+        android:label="Filmotéka"
+        tools:layout="@layout/movie_list">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/AddEditMovie" />
+    </fragment>
+    <fragment
+        android:id="@+id/AddEditMovie"
+        android:name="com.example.movies.AddEditMovie"
+        android:label="Pridať / Zmeniť"
+        tools:layout="@layout/add_edit_movie">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/MovieList" />
+    </fragment>
+    <fragment
+        android:id="@+id/EditMovieFragment"
+        android:name="com.example.movies.EditMovieFragment"
+        android:label="Editovať"
+        tools:layout="@layout/edit_movie_fragment">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/AddEditMovie" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FullMovieFragment"
+        android:name="com.example.movies.FullMovieFragment"
+        android:label="Detail"
+        tools:layout="@layout/full_movie_fragment">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/MovieList" />
+    </fragment>
+
+</navigation>

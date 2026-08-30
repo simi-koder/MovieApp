@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/fullMovieTitle"
+            android:layout_width="287dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="placeholderTitle"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="300dp" />
+
+        <TextView
+            android:id="@+id/fullMovieDirector"
+            android:layout_width="277dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:text="placeholderDirector"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieTitle" />
+
+        <CheckBox
+            android:id="@+id/fullMovieST"
+            android:layout_width="93dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="8dp"
+            android:text="Videla Terka"
+            app:layout_constraintEnd_toStartOf="@+id/fullMovieSB"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionPlaceholder" />
+
+        <CheckBox
+            android:id="@+id/fullMovieSB"
+            android:layout_width="93dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="16dp"
+            android:text="Videné spolu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionPlaceholder" />
+
+        <CheckBox
+            android:id="@+id/fullMovieSS"
+            android:layout_width="93dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="52dp"
+            android:text="Videl Šimi"
+            app:layout_constraintEnd_toStartOf="@+id/fullMovieST"
+            app:layout_constraintHorizontal_bias="0.84"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionPlaceholder" />
+
+        <TextView
+            android:id="@+id/fullMovieGenres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="placeholderGenres"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieST" />
+
+        <TextView
+            android:id="@+id/fullMovieYear"
+            android:layout_width="167dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="placeholderYear"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/fullMovieDirector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieTitle"
+            app:layout_constraintVertical_bias="0.187" />
+
+        <TextView
+            android:id="@+id/fullMoviePriority"
+            android:layout_width="204dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="placeholderPriority"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieOurRating" />
+
+        <TextView
+            android:id="@+id/fullMovieRating"
+            android:layout_width="205dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:text="placeholderRating"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieGenres" />
+
+        <TextView
+            android:id="@+id/fullMovieOurRating"
+            android:layout_width="205dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="placeholderOurRating"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieRating" />
+
+        <CheckBox
+            android:id="@+id/fullMovieColor"
+            android:layout_width="123dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="32dp"
+            android:text="Farebné"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMoviePriority" />
+
+        <TextView
+            android:id="@+id/descriptionPlaceholder"
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="left"
+            android:textSize="16dp"
+            android:visibility="gone"
+            android:text="placeholderDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieDirector" />
+
+        <Button
+            android:id="@+id/editMovieBtnDetail"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="32dp"
+            android:text="Editovať"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullMovieColor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

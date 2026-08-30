@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/addMovie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Pridať film"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/newTitleText"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Názov"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/newSeenSimi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addMovie" />
+
+        <CheckBox
+            android:id="@+id/newSeenSimi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Videl Šimi"
+            app:layout_constraintWidth_percent="0.32"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/newTitleText"
+            app:layout_constraintTop_toTopOf="@+id/newTitleText"
+            app:layout_constraintBottom_toBottomOf="@+id/newTitleText" />
+
+        <EditText
+            android:id="@+id/newYearText"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Rok vydania"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/newSeenTerka"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newTitleText" />
+
+        <CheckBox
+            android:id="@+id/newSeenTerka"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Videla Terka"
+            app:layout_constraintWidth_percent="0.32"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/newYearText"
+            app:layout_constraintTop_toTopOf="@+id/newYearText"
+            app:layout_constraintBottom_toBottomOf="@+id/newYearText" />
+
+        <EditText
+            android:id="@+id/newDirectorText"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Režisér"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/newSeenBoth"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newYearText" />
+
+        <CheckBox
+            android:id="@+id/newSeenBoth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Videné spolu"
+            app:layout_constraintWidth_percent="0.32"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/newDirectorText"
+            app:layout_constraintTop_toTopOf="@+id/newDirectorText"
+            app:layout_constraintBottom_toBottomOf="@+id/newDirectorText" />
+
+        <EditText
+            android:id="@+id/newRating"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Hodnotenie"
+            app:layout_constraintEnd_toStartOf="@+id/newColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newDirectorText" />
+
+        <CheckBox
+            android:id="@+id/newColor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Farebné"
+            app:layout_constraintWidth_percent="0.32"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/newRating"
+            app:layout_constraintTop_toTopOf="@+id/newRating"
+            app:layout_constraintBottom_toBottomOf="@+id/newRating" />
+
+        <EditText
+            android:id="@+id/newPriority"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Priorita NULL - 10"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newRating" />
+
+        <Button
+            android:id="@+id/newGenres"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="16dp"
+            android:text="Vyber žánre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPriority" />
+
+        <Button
+            android:id="@+id/addMovieBtn"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:text="Pridať film"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newGenres" />
+
+        <TextView
+            android:id="@+id/deleteMovieText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="Vymazať film"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addMovieBtn" />
+
+        <EditText
+            android:id="@+id/deleteMovieName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Vymazať film - názov"
+            android:inputType="text"
+            app:layout_constraintEnd_toStartOf="@+id/deleteMovieBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deleteMovieText" />
+
+        <ImageButton
+            android:id="@+id/deleteMovieBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/deleteMovieName"
+            app:layout_constraintBottom_toBottomOf="@+id/deleteMovieName"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <TextView
+            android:id="@+id/editMovieText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="Editovať film"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deleteMovieName" />
+
+        <EditText
+            android:id="@+id/editMovieTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Editovať - názov"
+            app:layout_constraintEnd_toStartOf="@+id/editMovieBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMovieText" />
+
+        <ImageButton
+            android:id="@+id/editMovieBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editMovieTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/editMovieTitle"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

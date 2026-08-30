@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchBarText"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:maxLines="1"
+            android:hint="Názov"
+            app:layout_constraintEnd_toStartOf="@+id/searchButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="55dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/searchBarText"
+            app:srcCompat="@android:drawable/ic_menu_search" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movieRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/movie_list_height"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/text_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBarText" />
+
+        <Button
+            android:id="@+id/randomMovie"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="12dp"
+            android:text="Náhodný film"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewFilter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/deleteFilterBtn"
+            app:layout_constraintTop_toTopOf="@+id/textViewFilter"
+            app:layout_constraintVertical_bias="0.421" />
+
+        <TextView
+            android:id="@+id/textViewFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Filtre"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieRecyclerView" />
+
+        <ImageButton
+            android:id="@+id/deleteFilterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewFilter"
+            app:layout_constraintStart_toEndOf="@+id/textViewFilter"
+            app:layout_constraintTop_toTopOf="@+id/textViewFilter"
+            app:layout_constraintVertical_bias="0.44"
+            app:srcCompat="@android:drawable/btn_dialog" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/filterOptions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFilter">
+
+            <CheckBox
+                android:id="@+id/videlSimiCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Videl Šimi"
+                app:layout_constraintEnd_toStartOf="@+id/videlaTerkaCheck"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/videlaTerkaCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Videla Terka"
+                app:layout_constraintEnd_toStartOf="@+id/videneSpoluCheck"
+                app:layout_constraintStart_toEndOf="@+id/videlSimiCheck"
+                app:layout_constraintTop_toTopOf="@+id/videlSimiCheck" />
+
+            <CheckBox
+                android:id="@+id/videneSpoluCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Videné spolu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/videlaTerkaCheck"
+                app:layout_constraintTop_toTopOf="@+id/videlSimiCheck" />
+
+            <Button
+                android:id="@+id/vyberZanre"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="12dp"
+                android:text="Vybrať žánre"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videlSimiCheck" />
+
+            <EditText
+                android:id="@+id/yearInput"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="Zadaj rok"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                app:layout_constraintWidth_percent="0.55"
+                app:layout_constraintEnd_toStartOf="@+id/colorCheck"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vyberZanre" />
+
+            <CheckBox
+                android:id="@+id/colorCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Farebné"
+                app:layout_constraintWidth_percent="0.55"
+                app:layout_constraintBottom_toBottomOf="@+id/yearInput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/yearInput"
+                app:layout_constraintTop_toTopOf="@+id/yearInput" />
+
+            <EditText
+                android:id="@+id/ratingInput"
+                android:layout_width="0dp"
+                android:layout_height="51dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Zadaj hodnotenie"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                app:layout_constraintWidth_percent="0.55"
+                app:layout_constraintEnd_toStartOf="@+id/grayscaleCheck"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yearInput" />
+
+            <CheckBox
+                android:id="@+id/grayscaleCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Čiernobiele"
+                app:layout_constraintWidth_percent="0.55"
+                app:layout_constraintBottom_toBottomOf="@+id/ratingInput"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ratingInput"
+                app:layout_constraintTop_toTopOf="@+id/ratingInput" />
+
+            <EditText
+                android:id="@+id/directorText"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Zadaj režiséra"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingInput" />
+
+            <Button
+                android:id="@+id/searchFilterBtn"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Hľadať"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/directorText"
+                app:layout_constraintWidth_max="200dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
