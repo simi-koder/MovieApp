@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/addUserTitle"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="30dp"
+            android:text="Pridať užívateľa"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/addUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:ems="10"
+            android:hint="Meno"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addUserTitle" />
+
+        <Button
+            android:id="@+id/addUserBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginHorizontal="32dp"
+            android:text="Pridať"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addUserName" />
+
+        <TextView
+            android:id="@+id/delUserTitle"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="50dp"
+            android:text="Odstrániť užívateľa"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addUserBtn" />
+
+        <CheckBox
+            android:id="@+id/user1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="placeholder 1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user2"
+            app:layout_constraintTop_toBottomOf="@+id/delUserTitle" />
+
+        <CheckBox
+            android:id="@+id/user2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 2"
+            app:layout_constraintBottom_toBottomOf="@+id/user1"
+            app:layout_constraintStart_toEndOf="@+id/user1"
+            app:layout_constraintTop_toTopOf="@+id/user1"
+            app:layout_constraintEnd_toStartOf="@+id/user3"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <CheckBox
+            android:id="@+id/user3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 3"
+            app:layout_constraintBottom_toBottomOf="@+id/user2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user2"
+            app:layout_constraintTop_toTopOf="@+id/user2" />
+
+        <CheckBox
+            android:id="@+id/user4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="placeholder 4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user5"
+            app:layout_constraintTop_toBottomOf="@+id/user1" />
+
+        <CheckBox
+            android:id="@+id/user5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 5"
+            app:layout_constraintBottom_toBottomOf="@+id/user4"
+            app:layout_constraintStart_toEndOf="@+id/user4"
+            app:layout_constraintTop_toTopOf="@+id/user4"
+            app:layout_constraintEnd_toStartOf="@id/user6"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <CheckBox
+            android:id="@+id/user6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 6"
+            app:layout_constraintBottom_toBottomOf="@+id/user5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user5"
+            app:layout_constraintTop_toTopOf="@+id/user5" />
+
+        <CheckBox
+            android:id="@+id/user7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="placeholder 7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user5"
+            app:layout_constraintTop_toBottomOf="@+id/user4" />
+
+        <CheckBox
+            android:id="@+id/user8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 8"
+            app:layout_constraintBottom_toBottomOf="@+id/user7"
+            app:layout_constraintStart_toEndOf="@+id/user7"
+            app:layout_constraintTop_toTopOf="@+id/user7"
+            app:layout_constraintEnd_toStartOf="@id/user9"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <CheckBox
+            android:id="@+id/user9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 9"
+            app:layout_constraintBottom_toBottomOf="@+id/user8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user8"
+            app:layout_constraintTop_toTopOf="@+id/user8" />
+
+        <CheckBox
+            android:id="@+id/user10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 9"
+            app:layout_constraintBottom_toTopOf="@id/delUserBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user8" />
+
+        <Button
+            android:id="@+id/delUserBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:text="Odstrániť"
+            app:layout_constraintTop_toBottomOf="@id/user10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="675dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -74,8 +74,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
 
-            R.id.action_settings -> {
+            R.id.action_movie -> {
                 navController.navigate(R.id.AddEditMovie)
+                true
+            }
+
+            R.id.action_user -> {
+                navController.navigate(R.id.AddUser)
                 true
             }
 

@@ -15,7 +15,6 @@
             app:popUpTo="@id/StartPage"
             app:popUpToInclusive="true" />
     </fragment>
-
     <fragment
         android:id="@+id/MovieList"
         android:name="com.example.movies.MovieList"
@@ -29,7 +28,7 @@
     <fragment
         android:id="@+id/AddEditMovie"
         android:name="com.example.movies.AddEditMovie"
-        android:label="Pridať / Zmeniť"
+        android:label="Pridať / Editovať film"
         tools:layout="@layout/add_edit_movie">
 
         <action
@@ -46,7 +45,6 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/AddEditMovie" />
     </fragment>
-
     <fragment
         android:id="@+id/FullMovieFragment"
         android:name="com.example.movies.FullMovieFragment"
@@ -56,6 +54,16 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/MovieList" />
+    </fragment>
+    <fragment
+        android:id="@+id/AddUser"
+        android:name="com.example.movies.AddUser"
+        android:label="Pridať / Odstrániť užívateľa"
+        tools:layout="@layout/add_user">
+
+    <action
+        android:id="@+id/action_SecondFragment_to_FirstFragment"
+        app:destination="@id/MovieList" />
     </fragment>
 
 </navigation>

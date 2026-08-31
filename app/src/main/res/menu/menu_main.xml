@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.movies.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_movie"
         android:orderInCategory="100"
-        android:title="Pridať / Zmeniť"
+        android:title="Pridať / Zmeniť film"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_user"
+        android:orderInCategory="100"
+        android:title="Pridať / Odstrániť užívateľa"
         app:showAsAction="never" />
 </menu>

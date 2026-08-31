@@ -22,9 +22,6 @@ class AddEditMovie : Fragment() {
     private var _binding: AddEditMovieBinding? = null
     private val binding get() = _binding!!
 
-//    private val sharedViewModel: SharedMoviesViewModel by activityViewModels()
-
-
     private var selectedGenres = listOf<String>()
 
     private lateinit var names: Array<String>
