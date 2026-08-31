@@ -27,6 +27,10 @@ class AddEditMovie : Fragment() {
 
     private var selectedGenres = listOf<String>()
 
+    private lateinit var names: Array<String>
+    private lateinit var checkedNames: BooleanArray
+    private var selectedNames = listOf<String>()
+
     private var titleInputText: String = ""
     private var yearInputText: Int = 0
     private var ratingInputText: Double = 0.0
@@ -60,6 +64,9 @@ class AddEditMovie : Fragment() {
         genres = dbHelper.getAllGenres().toTypedArray()
         checkedGenres = BooleanArray(genres.size)
 
+        names = dbHelper.getUsers().toTypedArray()
+        checkedNames = BooleanArray(names.size)
+
         binding.newGenres.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Vyber žánre")
@@ -84,6 +91,25 @@ class AddEditMovie : Fragment() {
             titleInputText = text.toString()
         }
 
+        binding.chooseSeen.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Vyber užívateľov čo film videli")
+                .setMultiChoiceItems(names, checkedNames) { _, which, isChecked ->
+                    checkedNames[which] = isChecked
+                }
+                .setPositiveButton("OK") { _, _ ->
+                    selectedNames = names.filterIndexed { index, _ ->
+                        checkedNames[index]
+                    }
+                    binding.chooseSeen.text =
+                        if (selectedNames.isEmpty())
+                            "Vyber videnosť"
+                        else
+                            "✓"
+                }
+                .show()
+        }
+
         binding.newYearText.addTextChangedListener { text ->
             yearInputText = text.toString().toIntOrNull() ?: 0
         }
@@ -102,8 +128,8 @@ class AddEditMovie : Fragment() {
 
         binding.addMovieBtn.setOnClickListener {
 
-            val seenSimi = binding.newSeenSimi.isChecked
-            val seenTerka = binding.newSeenTerka.isChecked
+//            val seenSimi = binding.newSeenSimi.isChecked
+//            val seenTerka = binding.newSeenTerka.isChecked
             val seenBoth = binding.newSeenBoth.isChecked
             val clr = binding.newColor.isChecked
 
@@ -122,8 +148,8 @@ class AddEditMovie : Fragment() {
                     rating = ratingInputText,
                     year = yearInputText,
                     genreIds = genreIds,
-                    videlSimi = seenSimi,
-                    videlaTerka = seenTerka,
+//                    videlSimi = seenSimi,
+//                    videlaTerka = seenTerka,
                     videneSpolu = seenBoth,
                     priority = priorityInputText,
                     color = clr

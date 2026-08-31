@@ -31,16 +31,18 @@
             android:ems="10"
             android:hint="Názov"
             android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@+id/newSeenSimi"
+            app:layout_constraintEnd_toStartOf="@+id/chooseSeen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addMovie" />
 
-        <CheckBox
-            android:id="@+id/newSeenSimi"
+        <Button
+            android:id="@+id/chooseSeen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="Videl Šimi"
+            android:text="Vybrať videnosť"
+            android:textStyle="bold"
+            android:gravity="center"
             app:layout_constraintWidth_percent="0.32"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/newTitleText"
@@ -55,21 +57,9 @@
             android:ems="10"
             android:hint="Rok vydania"
             android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@+id/newSeenTerka"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/newSeenBoth"
             app:layout_constraintTop_toBottomOf="@+id/newTitleText" />
-
-        <CheckBox
-            android:id="@+id/newSeenTerka"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:text="Videla Terka"
-            app:layout_constraintWidth_percent="0.32"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/newYearText"
-            app:layout_constraintTop_toTopOf="@+id/newYearText"
-            app:layout_constraintBottom_toBottomOf="@+id/newYearText" />
 
         <EditText
             android:id="@+id/newDirectorText"
@@ -79,7 +69,7 @@
             android:ems="10"
             android:hint="Režisér"
             android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@+id/newSeenBoth"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newYearText" />
 
@@ -89,11 +79,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Videné spolu"
-            app:layout_constraintWidth_percent="0.32"
+            app:layout_constraintBottom_toBottomOf="@+id/newYearText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/newDirectorText"
-            app:layout_constraintTop_toTopOf="@+id/newDirectorText"
-            app:layout_constraintBottom_toBottomOf="@+id/newDirectorText" />
+            app:layout_constraintStart_toEndOf="@+id/newYearText"
+            app:layout_constraintTop_toTopOf="@+id/newYearText"
+            app:layout_constraintWidth_percent="0.32" />
 
         <EditText
             android:id="@+id/newRating"

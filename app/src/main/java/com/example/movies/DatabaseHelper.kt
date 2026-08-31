@@ -71,6 +71,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
     }
 
+    fun addNewUser(
+        name: String
+    ): Boolean {
+        val db = getWritableDb()
+
+        val values = ContentValues().apply {
+            put("meno", name)
+        }
+
+        return (db.insert("Uzivatelia", null, values)) >= 0
+    }
+
     fun addUsers(
         name: List<String>
     ) {
@@ -81,7 +93,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 put("meno", name)
             }
 
-            val newUserId = db.insert("Uzivatelia", null, values)
+            db.insert("Uzivatelia", null, values)
         }
 
 //        DEBUG
@@ -100,6 +112,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
         db.close()
     }
+
+//    fun userCheckTrigger(): Boolean {
+//        val db = getReadableDb()
+//
+//        val cursor = db.rawQuery(
+//            """
+//
+//            """.trimIndent(), null
+//        )
+//    }
 
 //    fun delUsersAll(){
 //        val db = getWritableDb()
