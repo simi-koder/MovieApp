@@ -172,6 +172,30 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.close()
     }
 
+    fun getUserIds (
+        names: List<String>
+    ): List<Int> {
+        val db = getReadableDb()
+
+        val placeholders = names.joinToString(",") { "?" }
+        val userIds = mutableListOf<Int>()
+
+        val cursor = db.rawQuery(
+            """
+                SELECT id_user FROM Uzivatelia
+                WHERE meno IN ($placeholders)
+            """.trimIndent(), names.toTypedArray()
+        )
+
+        cursor.use {
+            while (it.moveToNext()) {
+                userIds.add(it.getInt(it.getColumnIndexOrThrow("id_user")))
+            }
+        }
+        db.close()
+        return userIds
+    }
+
 //    TODO: pridat pridavanie do videl tabulky
 
     fun getAllMovies(): List<MovieFull> {
@@ -257,10 +281,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         return movies
     }
 
+//    TODO: pridat boolarray tych co videli
     fun getMoviesByFilters(
         genreListRaw: List<String>,
-        videlSimi: Boolean = false,
-        videlaTerka: Boolean = false,
         videneSpolu: Boolean = false,
         year: String = "",
         rating: String = "",
@@ -273,12 +296,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         val db = getReadableDb()
         val movieList = mutableListOf<MovieFull>()
 
-        // args pre WHERE 1=1 podmienky (poradie musí sedieť s poradím pridávania do SQL!)
         val extraArgs = mutableListOf<String>()
 
         val extraConditions = StringBuilder()
-        if (videlSimi) extraConditions.append(" AND f.videl_simi = 1")
-        if (videlaTerka) extraConditions.append(" AND f.videla_terka = 1")
         if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1")
         if (year.isNotBlank()) {
             val parsed = parseYearFilter(year)
@@ -420,10 +440,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         year: Int,
         color: Boolean = false,
         genreIds: List<Int>,
-        videlSimi: Boolean = false,
-        videlaTerka: Boolean = false,
         videneSpolu: Boolean = false,
-        priority: Int
+        priority: Int,
+        description: String,
+        seenArray: List<Int>
     ): Long {
         val db = getWritableDb()
 
@@ -432,11 +452,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             put("reziser", director)
             put("hodnotenie", rating)
             put("rok_vydania", year)
-            put("videl_simi", if (videlSimi) 1 else 0)
-            put("videla_terka", if (videlaTerka) 1 else 0)
             put("videne_spolu", if (videneSpolu) 1 else 0)
             put("priorita", priority)
             put("farba", color)
+            put("popis", description)
         }
 
         val newMovieId = db.insert("Filmy", null, values)
@@ -448,6 +467,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                     put("id_zaner", genreId)
                 }
                 db.insert("Film_zaner_spoj", null, linkValues)
+            }
+            for (id in seenArray) {
+                val linkValuesNames = ContentValues().apply {
+                    put("id_film", newMovieId)
+                    put("id_user", id)
+                }
+                db.insert("Videl", null, linkValuesNames)
             }
         }
 

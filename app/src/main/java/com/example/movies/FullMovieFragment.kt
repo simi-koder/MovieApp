@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.movies.databinding.FullMovieFragmentBinding
 
+//TODO: zamenit simi terka za gone checkboxy yk
 class FullMovieFragment : Fragment() {
 
     private var _binding: FullMovieFragmentBinding? = null

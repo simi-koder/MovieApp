@@ -182,6 +182,7 @@ class MovieList : Fragment() {
         binding.directorText.addTextChangedListener { text -> directorInputText = text.toString() }
 
         binding.searchFilterBtn.setOnClickListener {
+//            TODO: dokoncit filtrovanuie podla videnosti
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 //                val videlSimi = binding.videlSimiCheck.isChecked
 //                val videlaTerka = binding.videlaTerkaCheck.isChecked

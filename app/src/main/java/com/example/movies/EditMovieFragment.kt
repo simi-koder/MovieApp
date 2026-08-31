@@ -29,6 +29,9 @@ class EditMovieFragment : Fragment() {
     private var selectedGenres = listOf<String>()
 
     private lateinit var genres: Array<String>
+    private lateinit var names: Array<String>
+    private lateinit var seenNamesBoolArray: BooleanArray
+    private lateinit var selectedNames: List<String>
     private lateinit var checkedGenres: BooleanArray
     private lateinit var dbHelper: DatabaseHelper
 
@@ -69,8 +72,8 @@ class EditMovieFragment : Fragment() {
             val ourRating = binding.editOurRating.text.toString()
                 .toDoubleOrNull()
 
-            val seenSimi = binding.editSeenSimi.isChecked
-            val seenTerka = binding.editSeenTerka.isChecked
+//            val seenSimi = binding.editSeenSimi.isChecked
+//            val seenTerka = binding.editSeenTerka.isChecked
             val seenBoth = binding.editSeenBoth.isChecked
             val color = binding.editColor.isChecked
 
@@ -91,30 +94,30 @@ class EditMovieFragment : Fragment() {
                     dbHelper.getGenreId(it)
                 }
 
-                val success = dbHelper.editMovie(
-                    title = title,
-                    director = director,
-                    rating = rating,
-                    year = year,
-                    genreIds = genreIds,
-                    videlSimi = seenSimi,
-                    videlaTerka = seenTerka,
-                    videneSpolu = seenBoth,
-                    priority = priority,
-                    color = color,
-                    our_rating = ourRating,
-                    description = description,
-                    movieToEdit = movieToEdit
-                )
+//                val success = dbHelper.editMovie(
+//                    title = title,
+//                    director = director,
+//                    rating = rating,
+//                    year = year,
+//                    genreIds = genreIds,
+////                    videlSimi = seenSimi,
+////                    videlaTerka = seenTerka,
+//                    videneSpolu = seenBoth,
+//                    priority = priority,
+//                    color = color,
+//                    our_rating = ourRating,
+//                    description = description,
+//                    movieToEdit = movieToEdit
+//                )
 
-                withContext(Dispatchers.Main) {
-                    if (success) {
-                        Log.d("EDIT_MOVIE", "Film edited")
-                        findNavController().popBackStack()
-                    } else {
-                        Log.e("EDIT_MOVIE", "Edit zlyhal")
-                    }
-                }
+//                withContext(Dispatchers.Main) {
+//                    if (success) {
+//                        Log.d("EDIT_MOVIE", "Film edited")
+//                        findNavController().popBackStack()
+//                    } else {
+//                        Log.e("EDIT_MOVIE", "Edit zlyhal")
+//                    }
+//                }
             }
         }
 
@@ -123,6 +126,9 @@ class EditMovieFragment : Fragment() {
     fun updatePageTitle(defaultTitle: String, movieTitle: String): MovieFull? {
 
         val matchedMovies = dbHelper.searchMovieByName(movieTitle, sharedViewModel.getCurrentMovies())
+
+        names = dbHelper.getUsers().toTypedArray()
+        seenNamesBoolArray = BooleanArray(names.size)
 
         if (matchedMovies.size != 1){
             val message = if (matchedMovies.isEmpty())
@@ -139,6 +145,9 @@ class EditMovieFragment : Fragment() {
 
         val singleMatchedMovie: MovieFull = matchedMovies.first()
 
+//        TODO: dokoncit
+//        selectedNames = dbHelper.userSeen(singleMatchedMovie.id)
+
         val editFilmTitle = singleMatchedMovie.title
         val editFilmYear = singleMatchedMovie.year
         val editFilmDirector = singleMatchedMovie.director
@@ -148,8 +157,6 @@ class EditMovieFragment : Fragment() {
         val editFilmSeenBoth =  singleMatchedMovie.seen_both
         val editFilmOurRating =  singleMatchedMovie.our_rating
         val editFilmDescription = singleMatchedMovie.description
-
-
 
         val editFilGenres = singleMatchedMovie.genre
             .map { it.trim() }
@@ -172,6 +179,26 @@ class EditMovieFragment : Fragment() {
         binding.editSeenBoth.isChecked = editFilmSeenBoth
         binding.editOurRating.setText(editFilmOurRating.toString())
         binding.descriptionText.setText(editFilmDescription)
+
+        binding.seenBtn.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Videl/a")
+                .setMultiChoiceItems(names, seenNamesBoolArray) { _, which, isChecked ->
+                    seenNamesBoolArray[which] = isChecked
+                }
+                .setPositiveButton("OK") { _, _ ->
+                    selectedNames = names.filterIndexed { index, _ ->
+                        seenNamesBoolArray[index]
+                    }
+
+                    binding.seenBtn.text =
+                        if (selectedGenres.isEmpty())
+                            "Zadaj videnosť"
+                        else
+                            "✓"
+                }
+                .show()
+        }
 
         binding.editGenres.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())

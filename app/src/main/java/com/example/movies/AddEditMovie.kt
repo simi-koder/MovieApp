@@ -33,6 +33,7 @@ class AddEditMovie : Fragment() {
     private var ratingInputText: Double = 0.0
     private var directorInputText: String = ""
     private var priorityInputText: Int = 0
+    private var descriptionText: String = ""
 
     private lateinit var genres: Array<String>
     private lateinit var checkedGenres: BooleanArray
@@ -123,10 +124,13 @@ class AddEditMovie : Fragment() {
             priorityInputText = text.toString().toIntOrNull() ?: 0
         }
 
+        binding.descriptionText.addTextChangedListener { text ->
+            descriptionText = text.toString()
+        }
+
         binding.addMovieBtn.setOnClickListener {
 
-//            val seenSimi = binding.newSeenSimi.isChecked
-//            val seenTerka = binding.newSeenTerka.isChecked
+            val seenUserIds = dbHelper.getUserIds(selectedNames)
             val seenBoth = binding.newSeenBoth.isChecked
             val clr = binding.newColor.isChecked
 
@@ -145,11 +149,11 @@ class AddEditMovie : Fragment() {
                     rating = ratingInputText,
                     year = yearInputText,
                     genreIds = genreIds,
-//                    videlSimi = seenSimi,
-//                    videlaTerka = seenTerka,
                     videneSpolu = seenBoth,
                     priority = priorityInputText,
-                    color = clr
+                    color = clr,
+                    description = descriptionText,
+                    seenArray = seenUserIds
                 )
 
                 withContext(Dispatchers.Main) {
