@@ -156,6 +156,22 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         return names
     }
 
+    fun delUsers (
+        names: List<String>
+    ) {
+        val db = getWritableDb()
+
+        val placeholders = names.joinToString(",") { "?" }
+
+        db.delete(
+            "Uzivatelia",
+            "meno IN ($placeholders)",
+            names.toTypedArray()
+        )
+
+        db.close()
+    }
+
 //    TODO: pridat pridavanie do videl tabulky
 
     fun getAllMovies(): List<MovieFull> {
@@ -178,11 +194,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
         cursor.use {
             while (it.moveToNext()) {
-
-                val genreString = it.getString(
-                    it.getColumnIndexOrThrow("genre_concat")
-                )
-
                 movies.add(
                     MovieFull(
                         id = it.getInt(it.getColumnIndexOrThrow("id_film")),
@@ -286,7 +297,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             }
         }
         if (director.isNotBlank()) {
-
+// TODO: chyba filter
         }
 
         if (!(color && grayscale)) {
