@@ -83,6 +83,45 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         return (db.insert("Uzivatelia", null, values)) >= 0
     }
 
+    fun addUserSeen(
+        userIds: List<Int>,
+        movieId: Int
+    ) {
+        val db = getWritableDb()
+
+        for (id in userIds) {
+            val values = ContentValues().apply {
+                put("id_user", id)
+                put("id_film", movieId)
+            }
+
+            db.insert("Videl", null, values)
+        }
+
+        db.close()
+    }
+
+    fun delUserSeen(
+        userIds: List<Int>,
+        movieId: Int?
+    ) {
+        if (userIds.isEmpty()) return
+        movieId ?: return
+
+        val db = getWritableDb()
+
+        val placeholders = userIds.joinToString(",") { "?" }
+        val args = (listOf(movieId.toString()) + userIds.map { it.toString() }).toTypedArray()
+
+        db.delete(
+            "Videl",
+            "id_film = ? AND id_user IN ($placeholders)",
+            args
+        )
+
+        db.close()
+    }
+
     fun addUsers(
         name: List<String>
     ) {
@@ -113,26 +152,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.close()
     }
 
-//    fun userCheckTrigger(): Boolean {
-//        val db = getReadableDb()
-//
-//        val cursor = db.rawQuery(
-//            """
-//
-//            """.trimIndent(), null
-//        )
-//    }
-
-//    fun delUsersAll(){
-//        val db = getWritableDb()
-//        db.rawQuery(
-//            """
-//                DELETE FROM Uzivatelia;
-//            """.trimIndent(), null
-//        )
-//        db.close()
-//    }
-
     fun getUsers (): List<String> {
         val db = getReadableDb()
 
@@ -156,6 +175,31 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         return names
     }
 
+    fun getUserSeenMovie(
+        movieId: Int
+    ) : List<String> {
+        val db = getReadableDb()
+
+        val cursor = db.rawQuery(
+            """
+                SELECT u.meno FROM Uzivatelia u
+                JOIN Videl v ON u.id_user = v.id_user
+                WHERE v.id_film = $movieId
+            """.trimIndent(), null
+        )
+
+        val userNamesSeenMovie = mutableListOf<String>()
+
+        cursor.use {
+            while (it.moveToNext()) {
+                userNamesSeenMovie.add(it.getString(it.getColumnIndexOrThrow("meno")))
+            }
+        }
+
+        db.close()
+        return userNamesSeenMovie
+    }
+
     fun delUsers (
         names: List<String>
     ) {
@@ -166,6 +210,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.delete(
             "Uzivatelia",
             "meno IN ($placeholders)",
+            names.toTypedArray()
+        )
+        db.delete(
+            "Videl",
+            "Videl.id_user IN (SELECT Uzivatelia.id_user FROM Uzivatelia WHERE Uzivatelia.meno IN ($placeholders))",
             names.toTypedArray()
         )
 
@@ -190,13 +239,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         cursor.use {
             while (it.moveToNext()) {
                 userIds.add(it.getInt(it.getColumnIndexOrThrow("id_user")))
+                Log.d("GET_USER_ID", it.getString(it.getColumnIndexOrThrow("id_user")))
             }
         }
         db.close()
         return userIds
     }
-
-//    TODO: pridat pridavanie do videl tabulky
 
     fun getAllMovies(): List<MovieFull> {
         val db = getReadableDb()
@@ -281,9 +329,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         return movies
     }
 
-//    TODO: pridat boolarray tych co videli
     fun getMoviesByFilters(
         genreListRaw: List<String>,
+        seenUsers: List<Int> = emptyList(),
         videneSpolu: Boolean = false,
         year: String = "",
         rating: String = "",
@@ -299,6 +347,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         val extraArgs = mutableListOf<String>()
 
         val extraConditions = StringBuilder()
+
+    if (seenUsers.isNotEmpty()) {
+        val placeholders = seenUsers.joinToString(",") { "?" }
+        extraConditions.append(" AND f.id_film IN (SELECT Videl.id_film FROM Videl WHERE Videl.id_user IN ($placeholders))")
+        extraArgs.addAll(seenUsers.map { it.toString() })
+    }
+
         if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1")
         if (year.isNotBlank()) {
             val parsed = parseYearFilter(year)
@@ -316,9 +371,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 extraArgs.add(ratingValue.toString())
             }
         }
-        if (director.isNotBlank()) {
-// TODO: chyba filter
-        }
+
 
         if (!(color && grayscale)) {
             if (color) extraConditions.append(" AND f.farba = 1")
@@ -502,6 +555,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             return false // film s daným názvom neexistuje
         }
 
+        db.delete("Videl", "id_film = ?", arrayOf(movieId.toString()))
+
         // vymaž väzby v spojovacej tabuľke
         db.delete("Film_zaner_spoj", "id_film = ?", arrayOf(movieId.toString()))
 
@@ -518,8 +573,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         rating: Double,
         year: Int,
         genreIds: List<Int>,
-        videlSimi: Boolean,
-        videlaTerka: Boolean,
         videneSpolu: Boolean,
         priority: Int,
         color: Boolean,
@@ -555,14 +608,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
             if (year != null) {
                 values.put("rok_vydania", year)
-            }
-
-            if (videlSimi != null) {
-                values.put("videl_simi", if (videlSimi) 1 else 0)
-            }
-
-            if (videlaTerka != null) {
-                values.put("videla_terka", if (videlaTerka) 1 else 0)
             }
 
             if (videneSpolu != null) {

@@ -2,7 +2,6 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -42,50 +41,134 @@
             app:layout_constraintTop_toBottomOf="@+id/fullMovieTitle" />
 
         <CheckBox
-            android:id="@+id/fullMovieST"
-            android:layout_width="93dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="8dp"
-            android:text="Videla Terka"
-            app:layout_constraintEnd_toStartOf="@+id/fullMovieSB"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionPlaceholder" />
-
-        <CheckBox
-            android:id="@+id/fullMovieSB"
-            android:layout_width="93dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="16dp"
-            android:text="Videné spolu"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionPlaceholder" />
-
-        <CheckBox
-            android:id="@+id/fullMovieSS"
-            android:layout_width="93dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="52dp"
-            android:text="Videl Šimi"
-            app:layout_constraintEnd_toStartOf="@+id/fullMovieST"
-            app:layout_constraintHorizontal_bias="0.84"
+            android:id="@+id/videl1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="placehodler 1"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/videl2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionPlaceholder" />
+            app:layout_constraintTop_toBottomOf="@id/descriptionPlaceholder" />
+
+        <CheckBox
+            android:id="@+id/videl2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 2"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/videl3"
+            app:layout_constraintStart_toEndOf="@+id/videl1"
+            app:layout_constraintTop_toTopOf="@+id/videl1" />
+
+        <CheckBox
+            android:id="@+id/videl3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 3"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/videl2"
+            app:layout_constraintTop_toTopOf="@+id/videl1" />
+
+        <CheckBox
+            android:id="@+id/videl4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="placehodler 4"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/videl5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/videl1" />
+
+        <CheckBox
+            android:id="@+id/videl5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 5"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/videl6"
+            app:layout_constraintStart_toEndOf="@+id/videl4"
+            app:layout_constraintTop_toTopOf="@+id/videl4" />
+
+        <CheckBox
+            android:id="@+id/videl6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 6"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/videl5"
+            app:layout_constraintTop_toTopOf="@+id/videl5" />
+
+        <CheckBox
+            android:id="@+id/videl7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="placehodler 7"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/videl8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/videl4" />
+
+        <CheckBox
+            android:id="@+id/videl8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 8"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/videl9"
+            app:layout_constraintStart_toEndOf="@+id/videl7"
+            app:layout_constraintTop_toTopOf="@+id/videl7" />
+
+        <CheckBox
+            android:id="@+id/videl9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 9"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/videl8"
+            app:layout_constraintTop_toTopOf="@+id/videl8" />
+
+        <CheckBox
+            android:id="@+id/videl10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="placeholder 10"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videl8" />
+
+        <!--            comment constraints if want to align-->
+        <CheckBox
+            android:id="@+id/videneSpoluCheck"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Videné spolu"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videl10" />
+
 
         <TextView
             android:id="@+id/fullMovieGenres"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:maxLines="3"
             android:text="placeholderGenres"
             android:textSize="25dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullMovieST" />
+            app:layout_constraintTop_toBottomOf="@+id/videneSpoluCheck" />
 
         <TextView
             android:id="@+id/fullMovieYear"

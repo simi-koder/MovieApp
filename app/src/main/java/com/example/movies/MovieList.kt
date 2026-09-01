@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -54,6 +53,9 @@ class MovieList : Fragment() {
 
         genres = dbHelper.getAllGenres().toTypedArray()
         checkedGenres = BooleanArray(genres.size)
+
+        val names = listOf(binding.videl1, binding.videl2, binding.videl3, binding.videl4, binding.videl5,
+            binding.videl6, binding.videl7, binding.videl8, binding.videl9, binding.videl10)
 
         // sleduj zmeny v shared movies a automaticky aktualizuj RecyclerView
         sharedViewModel.movies.observe(viewLifecycleOwner) { updatedMovies ->
@@ -118,8 +120,9 @@ class MovieList : Fragment() {
             binding.searchBarText.text?.clear()
 
 //            // vyresetuj checkboxy
-//            binding.videlSimiCheck.isChecked = false
-//            binding.videlaTerkaCheck.isChecked = false
+            for (user in names){
+                user.isChecked = false
+            }
             binding.videneSpoluCheck.isChecked = false
             binding.colorCheck.isChecked = false
             binding.grayscaleCheck.isChecked = false
@@ -157,7 +160,6 @@ class MovieList : Fragment() {
 
                 withContext(Dispatchers.Main) {
                     movieAdapter.updateMovies(moviesTemp)
-                    // poznámka: tu NEupravujeme sharedViewModel, lebo ide len o dočasné zobrazenie výsledkov hľadania
                 }
             }
         }
@@ -184,17 +186,22 @@ class MovieList : Fragment() {
         binding.searchFilterBtn.setOnClickListener {
 //            TODO: dokoncit filtrovanuie podla videnosti
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-//                val videlSimi = binding.videlSimiCheck.isChecked
-//                val videlaTerka = binding.videlaTerkaCheck.isChecked
+
+
                 val videneSpolu = binding.videneSpoluCheck.isChecked
                 val color = binding.colorCheck.isChecked
                 val grayscale = binding.grayscaleCheck.isChecked
 
+                val videlUser = mutableListOf<String>()
+                names.forEachIndexed { _, box ->
+                    if (box.isChecked) videlUser.add(box.text.toString())
+                }
+
+                val videlUserIds = dbHelper.getUserIds(videlUser)
 
                 val filteredMovies = dbHelper.getMoviesByFilters(
                     genreListRaw = selectedGenres,
-//                    videlSimi = videlSimi,
-//                    videlaTerka = videlaTerka,
+                    seenUsers = videlUserIds,
                     videneSpolu = videneSpolu,
                     year = yearInputText,
                     rating = ratingInputText,

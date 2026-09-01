@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -72,8 +71,6 @@ class EditMovieFragment : Fragment() {
             val ourRating = binding.editOurRating.text.toString()
                 .toDoubleOrNull()
 
-//            val seenSimi = binding.editSeenSimi.isChecked
-//            val seenTerka = binding.editSeenTerka.isChecked
             val seenBoth = binding.editSeenBoth.isChecked
             val color = binding.editColor.isChecked
 
@@ -94,36 +91,37 @@ class EditMovieFragment : Fragment() {
                     dbHelper.getGenreId(it)
                 }
 
-//                val success = dbHelper.editMovie(
-//                    title = title,
-//                    director = director,
-//                    rating = rating,
-//                    year = year,
-//                    genreIds = genreIds,
-////                    videlSimi = seenSimi,
-////                    videlaTerka = seenTerka,
-//                    videneSpolu = seenBoth,
-//                    priority = priority,
-//                    color = color,
-//                    our_rating = ourRating,
-//                    description = description,
-//                    movieToEdit = movieToEdit
-//                )
+                val success = dbHelper.editMovie(
+                    title = title,
+                    director = director,
+                    rating = rating,
+                    year = year,
+                    genreIds = genreIds,
+                    videneSpolu = seenBoth,
+                    priority = priority,
+                    color = color,
+                    our_rating = ourRating,
+                    description = description,
+                    movieToEdit = movieToEdit
+                )
 
-//                withContext(Dispatchers.Main) {
-//                    if (success) {
-//                        Log.d("EDIT_MOVIE", "Film edited")
-//                        findNavController().popBackStack()
-//                    } else {
-//                        Log.e("EDIT_MOVIE", "Edit zlyhal")
-//                    }
-//                }
+                dbHelper.delUserSeen(dbHelper.getUserIds(names.toList()), movieToEdit.id)
+                dbHelper.addUserSeen(dbHelper.getUserIds(selectedNames.toList()), movieToEdit.id)
+
+                withContext(Dispatchers.Main) {
+                    if (success) {
+                        Log.d("EDIT_MOVIE", "Film edited")
+                        findNavController().popBackStack()
+                    } else {
+                        Log.e("EDIT_MOVIE", "Edit zlyhal")
+                    }
+                }
             }
         }
 
     }
 
-    fun updatePageTitle(defaultTitle: String, movieTitle: String): MovieFull? {
+    fun updatePageTitle(defaultTitle: String, movieTitle: String): MovieFull {
 
         val matchedMovies = dbHelper.searchMovieByName(movieTitle, sharedViewModel.getCurrentMovies())
 
@@ -140,13 +138,12 @@ class EditMovieFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
 
             findNavController().popBackStack()
-            return null
         }
 
         val singleMatchedMovie: MovieFull = matchedMovies.first()
 
 //        TODO: dokoncit
-//        selectedNames = dbHelper.userSeen(singleMatchedMovie.id)
+        selectedNames = dbHelper.getUserSeenMovie(singleMatchedMovie.id)
 
         val editFilmTitle = singleMatchedMovie.title
         val editFilmYear = singleMatchedMovie.year
@@ -167,6 +164,29 @@ class EditMovieFragment : Fragment() {
             editFilGenres.contains(genres[index])
         }
 
+        val seenNamesBoolArray = BooleanArray(names.size) { index ->
+            selectedNames.contains(names[index])
+        }
+
+        binding.seenBtn.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Vyber užívateľov čo film videli")
+                .setMultiChoiceItems(names, seenNamesBoolArray) { _, which, isChecked ->
+                    seenNamesBoolArray[which] = isChecked
+                }
+                .setPositiveButton("OK") { _, _ ->
+                    selectedNames = names.filterIndexed { index, _ ->
+                        seenNamesBoolArray[index]
+                    }
+                    binding.seenBtn.text =
+                        if (selectedNames.isEmpty())
+                            "Zadaj videnosť"
+                        else
+                            "✓"
+                }
+                .show()
+        }
+
         Log.d("EDIT_CHECKED_GENRES", editGenresBoolArray.contentToString())
 
         binding.editMovie.text = defaultTitle + editFilmTitle
@@ -179,26 +199,6 @@ class EditMovieFragment : Fragment() {
         binding.editSeenBoth.isChecked = editFilmSeenBoth
         binding.editOurRating.setText(editFilmOurRating.toString())
         binding.descriptionText.setText(editFilmDescription)
-
-        binding.seenBtn.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Videl/a")
-                .setMultiChoiceItems(names, seenNamesBoolArray) { _, which, isChecked ->
-                    seenNamesBoolArray[which] = isChecked
-                }
-                .setPositiveButton("OK") { _, _ ->
-                    selectedNames = names.filterIndexed { index, _ ->
-                        seenNamesBoolArray[index]
-                    }
-
-                    binding.seenBtn.text =
-                        if (selectedGenres.isEmpty())
-                            "Zadaj videnosť"
-                        else
-                            "✓"
-                }
-                .show()
-        }
 
         binding.editGenres.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
