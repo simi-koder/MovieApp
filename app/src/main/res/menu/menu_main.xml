@@ -2,24 +2,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.movies.MainActivity">
+
     <item
         android:id="@+id/action_movie"
-        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="10"
         android:title="Pridať / Zmeniť film"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/action_user"
-        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:orderInCategory="20"
         android:title="Pridať / Odstrániť užívateľa"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/action_send_db"
-        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="30"
         android:title="Zdieľať databázu"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/action_import_db"
-        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:orderInCategory="40"
         android:title="Importovať databázu"
         app:showAsAction="never" />
+
 </menu>

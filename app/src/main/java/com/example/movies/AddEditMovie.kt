@@ -80,7 +80,7 @@ class AddEditMovie : Fragment() {
                         if (selectedGenres.isEmpty())
                             "Vyber žánre"
                         else
-                            selectedGenres.joinToString(",")
+                            selectedGenres.joinToString(", ")
                 }
                 .show()
         }

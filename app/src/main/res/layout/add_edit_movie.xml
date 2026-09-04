@@ -20,6 +20,7 @@
             android:text="Pridať film"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,11 +33,13 @@
             android:ems="10"
             android:hint="Názov"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/chooseSeen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addMovie" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/chooseSeen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,7 +51,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/newTitleText"
             app:layout_constraintTop_toTopOf="@+id/newTitleText"
-            app:layout_constraintBottom_toBottomOf="@+id/newTitleText" />
+            app:layout_constraintBottom_toBottomOf="@+id/newTitleText"
+            style="@style/Widget.Material3.Button" />
 
         <EditText
             android:id="@+id/newYearText"
@@ -58,6 +62,8 @@
             android:ems="10"
             android:hint="Rok vydania"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/newSeenBoth"
             app:layout_constraintTop_toBottomOf="@+id/newTitleText" />
@@ -70,6 +76,8 @@
             android:ems="10"
             android:hint="Režisér"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newYearText" />
@@ -80,6 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Videné spolu"
+            android:textColor="@color/white"
+            app:buttonTint="@color/checkbox_color_selector"
             app:layout_constraintBottom_toBottomOf="@+id/newYearText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/newYearText"
@@ -94,6 +104,8 @@
             android:ems="10"
             android:inputType="text"
             android:hint="Hodnotenie"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/newColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newDirectorText" />
@@ -104,6 +116,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Farebné"
+            android:textColor="@color/white"
+            app:buttonTint="@color/checkbox_color_selector"
             app:layout_constraintWidth_percent="0.32"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/newRating"
@@ -118,11 +132,13 @@
             android:ems="10"
             android:hint="Priorita NULL - 10"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newRating" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/newGenres"
             android:layout_width="0dp"
             android:layout_height="55dp"
@@ -130,9 +146,10 @@
             android:text="Vyber žánre"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
+            app:layout_constraintTop_toBottomOf="@+id/descriptionText"
+            style="@style/Widget.Material3.Button" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/addMovieBtn"
             android:layout_width="0dp"
             android:layout_height="54dp"
@@ -141,7 +158,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newGenres" />
+            app:layout_constraintTop_toBottomOf="@+id/newGenres"
+            style="@style/Widget.Material3.Button" />
 
         <TextView
             android:id="@+id/deleteMovieText"
@@ -152,6 +170,8 @@
             android:text="Vymazať film"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -165,6 +185,8 @@
             android:ems="10"
             android:hint="Vymazať film - názov"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/deleteMovieBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/deleteMovieText" />
@@ -173,6 +195,7 @@
             android:id="@+id/deleteMovieBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/deleteMovieName"
             app:layout_constraintBottom_toBottomOf="@+id/deleteMovieName"
@@ -187,6 +210,8 @@
             android:text="Editovať film"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/deleteMovieName" />
@@ -200,6 +225,8 @@
             android:ems="10"
             android:inputType="text"
             android:hint="Editovať - názov"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/editMovieBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editMovieText" />
@@ -208,6 +235,7 @@
             android:id="@+id/editMovieBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editMovieTitle"
             app:layout_constraintBottom_toBottomOf="@+id/editMovieTitle"
@@ -222,6 +250,8 @@
             android:gravity="start|top"
             android:hint="Popis"
             android:inputType="textMultiLine"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
