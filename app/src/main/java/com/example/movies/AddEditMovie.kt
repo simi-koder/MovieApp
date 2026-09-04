@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -135,7 +135,7 @@ class AddEditMovie : Fragment() {
             val clr = binding.newColor.isChecked
 
             if (titleInputText.isBlank()) {
-                binding.newTitleText.error = "Zadaj názov filmu"
+                Toast.makeText(requireContext(), "Zadaj názov filmu", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -158,10 +158,12 @@ class AddEditMovie : Fragment() {
 
                 withContext(Dispatchers.Main) {
                     if (newId != -1L) {
-                        Log.d("ADD_MOVIE", "Film pridaný, id=$newId")
+//                        Log.d("ADD_MOVIE", "Film pridaný, id=$newId")
+                        Toast.makeText(requireContext(), "Film pridaný", Toast.LENGTH_LONG).show()
                         parentFragmentManager.popBackStack()
                     } else {
-                        Log.e("ADD_MOVIE", "Insert zlyhal")
+//                        Log.e("ADD_MOVIE", "Insert zlyhal")
+                        Toast.makeText(requireContext(), "Pridanie zlyhalo", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -172,15 +174,23 @@ class AddEditMovie : Fragment() {
         }
 
         binding.deleteMovieBtn.setOnClickListener {
+
+            if (deleteMovieTitle.isBlank()){
+                Toast.makeText(requireContext(), "Zadaj názov filmu", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             val tempBool = dbHelper.deleteMovie(deleteMovieTitle)
 
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 withContext(Dispatchers.Main) {
                     if (tempBool) {
-                        Log.d("DEL_MOVIE", "Film vymazany")
+//                        Log.d("DEL_MOVIE", "Film vymazany")
+                        Toast.makeText(requireContext(), "Film vymazaný", Toast.LENGTH_LONG).show()
                         parentFragmentManager.popBackStack()
                     } else {
-                        Log.e("DEL_MOVIE", "Delete zlyhal")
+//                        Log.e("DEL_MOVIE", "Delete zlyhal")
+                        Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -192,7 +202,8 @@ class AddEditMovie : Fragment() {
 
         binding.editMovieBtn.setOnClickListener {
             if (editMovieInputText.isBlank()) {
-                binding.editMovieTitle.error = "Zadaj názov filmu"
+//                binding.editMovieTitle.error = "Zadaj názov filmu"
+                Toast.makeText(requireContext(), "Zadaj názov filmu", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 

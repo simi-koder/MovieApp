@@ -2,6 +2,7 @@ package com.example.movies
 
     import android.annotation.SuppressLint
     import android.content.Intent
+    import android.net.Uri
     import android.os.Bundle
     import androidx.appcompat.app.AppCompatActivity
     import androidx.activity.enableEdgeToEdge
@@ -14,18 +15,25 @@ package com.example.movies
     import androidx.navigation.ui.setupActionBarWithNavController
     import android.view.Menu
     import android.view.MenuItem
+    import android.widget.Toast
+    import androidx.activity.result.contract.ActivityResultContracts
     import androidx.core.content.FileProvider
     import androidx.navigation.NavController
     import com.example.movies.databinding.ActivityMainBinding
+    import java.io.FileOutputStream
 
 
-    @SuppressLint("WrongViewCast")
+@SuppressLint("WrongViewCast")
     class MainActivity : AppCompatActivity() {
 
         private lateinit var appBarConfiguration: AppBarConfiguration
         private lateinit var binding: ActivityMainBinding
 
         private lateinit var navController: NavController
+
+        private val importLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { importDatabase(it) }
+        }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -78,37 +86,65 @@ package com.example.movies
             startActivity(Intent.createChooser(shareIntent, "Zdieľať databázu"))
         }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-
-            R.id.action_movie -> {
-                navController.navigate(R.id.AddEditMovie)
-                true
-            }
-
-            R.id.action_user -> {
-                navController.navigate(R.id.AddUser)
-                true
-            }
-
-            R.id.action_send_db -> {
-                exportDatabase()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+        private fun pickDatabaseFile() {
+            importLauncher.launch("*/*")
         }
-    }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
-    }
+        private fun importDatabase(uri: Uri) {
+            try {
+                val targetFile = getDatabasePath(DatabaseHelper.DB_NAME)
+
+                contentResolver.openInputStream(uri)?.use { input ->
+                    FileOutputStream(targetFile).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+
+                Toast.makeText(this, "Databáza bola úspešne importovaná", Toast.LENGTH_LONG).show()
+
+                recreate()
+
+            } catch (e: Exception) {
+                Toast.makeText(this, "Import zlyhal: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        override fun onCreateOptionsMenu(menu: Menu): Boolean {
+            menuInflater.inflate(R.menu.menu_main, menu)
+            return true
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            return when (item.itemId) {
+
+                R.id.action_movie -> {
+                    navController.navigate(R.id.AddEditMovie)
+                    true
+                }
+
+                R.id.action_user -> {
+                    navController.navigate(R.id.AddUser)
+                    true
+                }
+
+                R.id.action_send_db -> {
+                    exportDatabase()
+                    true
+                }
+
+                R.id.action_import_db -> {
+                    pickDatabaseFile()
+                    true
+                }
+
+                else -> super.onOptionsItemSelected(item)
+            }
+        }
+
+        override fun onSupportNavigateUp(): Boolean {
+            val navController = findNavController(R.id.nav_host_fragment_content_main)
+            return navController.navigateUp(appBarConfiguration)
+                    || super.onSupportNavigateUp()
+        }
 
 }

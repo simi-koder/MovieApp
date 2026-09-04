@@ -17,4 +17,9 @@
         android:orderInCategory="100"
         android:title="Zdieľať databázu"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_import_db"
+        android:orderInCategory="100"
+        android:title="Importovať databázu"
+        app:showAsAction="never" />
 </menu>

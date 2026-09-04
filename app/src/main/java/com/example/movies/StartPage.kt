@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.transition.Visibility
 import com.example.movies.databinding.StartPageBinding
@@ -62,14 +63,16 @@ class StartPage : Fragment() {
 
         binding.doneBtn.setOnClickListener {
             if (binding.numOfUsersBar.progress == 0){
-                binding.numUsers.text = "Počet užívateľov musí byť vačší ako 1"
+                binding.numUsers.error
+                Toast.makeText(requireContext(), "Počet užívateľov musí byť vačší ako 1", Toast.LENGTH_LONG).show()
+
                 return@setOnClickListener
             }
 
             for (i in userNames) {
                 if (i.isVisible) {
                     if (i.text.isNullOrBlank()){
-                        i.error = "Zadaj meno"
+                        i.error
                         return@setOnClickListener
                     }
                     nameList.add(i.text.toString())
