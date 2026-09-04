@@ -63,10 +63,16 @@ class StartPage : Fragment() {
 
         binding.doneBtn.setOnClickListener {
             if (binding.numOfUsersBar.progress == 0){
-                binding.numUsers.error
-                Toast.makeText(requireContext(), "Počet užívateľov musí byť vačší ako 1", Toast.LENGTH_LONG).show()
+                if (dbHelper.getUsers().isEmpty()) {
+                    binding.numUsers.error
+                    Toast.makeText(
+                        requireContext(),
+                        "Počet užívateľov musí byť vačší ako 1",
+                        Toast.LENGTH_LONG
+                    ).show()
 
-                return@setOnClickListener
+                    return@setOnClickListener
+                }
             }
 
             for (i in userNames) {
