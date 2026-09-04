@@ -244,6 +244,7 @@
             android:layout_marginTop="25dp"
             android:text="Hotovo"
             android:textSize="25dp"
+            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/name10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
