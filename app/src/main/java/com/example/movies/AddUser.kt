@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -42,13 +43,13 @@ class AddUser : Fragment() {
 
         binding.addUserBtn.setOnClickListener {
             if (binding.addUserName.text.isNullOrBlank()){
-                binding.addUserBtn.error = "Zadaj meno"
+                Toast.makeText(requireContext(), "Zadaj meno", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             if (!dbHelper.addNewUser(binding.addUserName.text.toString())){
                 binding.addUserBtn.error
-                binding.addUserBtn.text= "Maximálny počet užívateľov dosiahnutý (10)"
+                Toast.makeText(requireContext(), "Maximálny počet užívateľov dosiahnutý (10)", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 

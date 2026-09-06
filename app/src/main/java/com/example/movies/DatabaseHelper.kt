@@ -348,11 +348,19 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
         val extraConditions = StringBuilder()
 
-    if (seenUsers.isNotEmpty()) {
-        val placeholders = seenUsers.joinToString(",") { "?" }
-        extraConditions.append(" AND f.id_film IN (SELECT Videl.id_film FROM Videl WHERE Videl.id_user IN ($placeholders))")
-        extraArgs.addAll(seenUsers.map { it.toString() })
-    }
+        if (seenUsers.isNotEmpty()) {
+            val placeholders = seenUsers.joinToString(",") { "?" }
+            extraConditions.append("""
+                AND f.id_film IN (
+                    SELECT Videl.id_film
+                    FROM Videl
+                    WHERE Videl.id_user IN ($placeholders)
+                    GROUP BY Videl.id_film
+                    HAVING COUNT(DISTINCT Videl.id_user) = ${seenUsers.size}
+                )
+            """.trimIndent())
+            extraArgs.addAll(seenUsers.map { it.toString() })
+        }
 
         if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1")
         if (year.isNotBlank()) {

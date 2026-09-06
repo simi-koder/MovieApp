@@ -57,7 +57,6 @@ class MovieList : Fragment() {
         val names = listOf(binding.videl1, binding.videl2, binding.videl3, binding.videl4, binding.videl5,
             binding.videl6, binding.videl7, binding.videl8, binding.videl9, binding.videl10)
 
-        // sleduj zmeny v shared movies a automaticky aktualizuj RecyclerView
         sharedViewModel.movies.observe(viewLifecycleOwner) { updatedMovies ->
             movieAdapter.updateMovies(updatedMovies)
         }
@@ -81,30 +80,16 @@ class MovieList : Fragment() {
                         binding.videl6, binding.videl7, binding.videl8, binding.videl9, binding.videl10
                     )
 
-//                    var lastCheckId = R.id.videl1
-
                     userNames.forEachIndexed { i, name ->
                         seenChecks[i].apply {
                             visibility = View.VISIBLE
                             text = name
                         }
                         Log.d("NAME_FOR_EACH", name)
-//                        lastCheckId = seenChecks[i].id
                     }
-
-//                    TODO: pridat poslednemu cloveku constraint
 
                     if (userNames.size >= 2) {
                         binding.videneSpoluCheck.visibility = View.VISIBLE
-//
-//                        ConstraintSet().apply {
-//                            clone(binding.filterOptions)
-//                            connect(R.id.videneSpoluCheck, ConstraintSet.START, lastCheckId, ConstraintSet.END)
-//                            connect(R.id.videneSpoluCheck, ConstraintSet.TOP, lastCheckId, ConstraintSet.TOP)
-//                            connect(R.id.videneSpoluCheck, ConstraintSet.BOTTOM, lastCheckId, ConstraintSet.BOTTOM)
-//                            connect(R.id.videneSpoluCheck, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-//                            applyTo(binding.filterOptions)
-//                        }
                     }
                     View.VISIBLE
                 }
@@ -184,10 +169,7 @@ class MovieList : Fragment() {
         binding.directorText.addTextChangedListener { text -> directorInputText = text.toString() }
 
         binding.searchFilterBtn.setOnClickListener {
-//            TODO: dokoncit filtrovanuie podla videnosti
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-
-
                 val videneSpolu = binding.videneSpoluCheck.isChecked
                 val color = binding.colorCheck.isChecked
                 val grayscale = binding.grayscaleCheck.isChecked
