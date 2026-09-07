@@ -94,6 +94,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         return result > 0
     }
 
+//    TODO: delete genre
+
     fun addNewUser(
         name: String
     ): Boolean {

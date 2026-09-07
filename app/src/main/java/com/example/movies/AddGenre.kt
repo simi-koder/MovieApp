@@ -69,6 +69,7 @@ class AddGenre : Fragment() {
             Toast.makeText(requireContext(), "Žáner už existuje", Toast.LENGTH_LONG).show()
         }
     }
+//    TODO del genre
 
     override fun onDestroyView() {
         super.onDestroyView()
