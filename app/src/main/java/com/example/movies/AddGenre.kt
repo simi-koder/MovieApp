@@ -50,6 +50,23 @@ class AddGenre : Fragment() {
                 binding.genreType.error
                 Toast.makeText(requireContext(), "Zadaj názov", Toast.LENGTH_LONG).show()
             }
+            if (dbHelper.addNewGenre(newGenreType)){
+
+                binding.genreType.text.clear()
+
+                parentFragmentManager.beginTransaction()
+                    .detach(this)
+                    .commitNow()
+
+                parentFragmentManager.beginTransaction()
+                    .attach(this)
+                    .commit()
+
+                Toast.makeText(requireContext(), "Pridané", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            binding.genreType.error
+            Toast.makeText(requireContext(), "Žáner už existuje", Toast.LENGTH_LONG).show()
         }
     }
 

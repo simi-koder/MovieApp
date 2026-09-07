@@ -66,4 +66,15 @@
         app:destination="@id/MovieList" />
     </fragment>
 
+    <fragment
+        android:id="@+id/AddGenre"
+        android:name="com.example.movies.AddGenre"
+        android:label="Pridať / Odstrániť žáner"
+        tools:layout="@layout/add_genre">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/MovieList" />
+    </fragment>
+
 </navigation>

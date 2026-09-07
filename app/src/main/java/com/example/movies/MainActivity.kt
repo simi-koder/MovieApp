@@ -137,6 +137,11 @@ package com.example.movies
                     true
                 }
 
+                R.id.action_add_ganre -> {
+                    navController.navigate(R.id.AddGenre)
+                    true
+                }
+
                 else -> super.onOptionsItemSelected(item)
             }
         }

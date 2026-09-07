@@ -71,16 +71,28 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
     }
 
-//    fun addNewGenre(
-//        type: String
-//    ): Boolean {
-//        val strippedType = removeDiacritics(type)
-//
-//        val db = getWritableDb()
-//
-//
-//
-//    }
+    fun addNewGenre(
+        type: String
+    ): Boolean {
+        val db = getWritableDb()
+
+        val cursor = db.rawQuery("SELECT 1 FROM Zaner WHERE typ = ?", arrayOf(type))
+        val alreadyExists = cursor.moveToFirst()
+        cursor.close()
+
+        if (alreadyExists) {
+            db.close()
+            return false
+        }
+
+        val values = ContentValues().apply {
+            put("typ", type)
+        }
+
+        val result = db.insert("Zaner", null, values)
+        db.close()
+        return result > 0
+    }
 
     fun addNewUser(
         name: String

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+<!--    TODO: mensi recycler view a pridat odstranovanie-->
 
     <TextView
         android:id="@+id/genreTitle"
