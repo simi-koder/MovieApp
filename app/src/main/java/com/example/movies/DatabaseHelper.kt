@@ -71,6 +71,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
     }
 
+//    fun addNewGenre(
+//        type: String
+//    ): Boolean {
+//        val strippedType = removeDiacritics(type)
+//
+//        val db = getWritableDb()
+//
+//
+//
+//    }
+
     fun addNewUser(
         name: String
     ): Boolean {
@@ -362,7 +373,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             extraArgs.addAll(seenUsers.map { it.toString() })
         }
 
-        if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1")
+        if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1") else extraConditions.append(" AND f.videne_spolu = 0")
         if (year.isNotBlank()) {
             val parsed = parseYearFilter(year)
             if (parsed != null) {
