@@ -71,6 +71,77 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
     }
 
+    fun addNewGenre(
+        type: String
+    ): Boolean {
+        val db = getWritableDb()
+
+        val cursor = db.rawQuery("SELECT 1 FROM Zaner WHERE typ = ?", arrayOf(type))
+        val alreadyExists = cursor.moveToFirst()
+        cursor.close()
+
+        if (alreadyExists) {
+            db.close()
+            return false
+        }
+
+        val values = ContentValues().apply {
+            put("typ", type)
+        }
+
+        val result = db.insert("Zaner", null, values)
+        db.close()
+        return result > 0
+    }
+
+//    TODO: delete genre
+    fun delGenre(
+        type: String
+    ) : Boolean {
+        val db = getWritableDb()
+
+        val cursor = db.rawQuery(
+            "SELECT id_zaner FROM Zaner WHERE typ = ?",
+            arrayOf(type)
+        )
+
+        val zanerIds = mutableListOf<Int>()
+
+        cursor.use {
+            while (it.moveToNext()) {
+                zanerIds.add(it.getInt(it.getColumnIndexOrThrow("id_zaner")))
+            }
+        }
+
+        if (zanerIds.isEmpty()) {
+            db.close()
+            return false
+        }
+
+        val placeholders = zanerIds.joinToString(",") { "?" }
+        val zanerIdsArgs = zanerIds.map { it.toString() }.toTypedArray()
+
+        val successFZJ = db.delete("Film_zaner_spoj", "id_zaner IN ($placeholders)", zanerIdsArgs)
+        val successZ = db.delete("Zaner", "typ = ?", arrayOf(type))
+
+        val cursorDebug = db.rawQuery("SELECT * FROM Zaner", null)
+
+        cursorDebug.use {
+            val columnNames = it.columnNames
+            Log.d("DB_DEBUG", "Stĺpce: ${columnNames.joinToString(", ")}")
+
+            while (it.moveToNext()) {
+                val row = columnNames.joinToString(" | ") { colName ->
+                    "$colName=${it.getString(it.getColumnIndexOrThrow(colName))}"
+                }
+                Log.d("DB_DEBUG", row)
+            }
+        }
+
+        db.close()
+        return successFZJ >= 0 && successZ > 0
+    }
+
     fun addNewUser(
         name: String
     ): Boolean {
@@ -360,9 +431,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                 )
             """.trimIndent())
             extraArgs.addAll(seenUsers.map { it.toString() })
+        } else {
+            extraConditions.append("""
+                AND f.id_film NOT IN (
+                    SELECT Videl.id_film
+                    FROM Videl
+                )
+            """.trimIndent())
         }
 
-        if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1")
+        if (videneSpolu) extraConditions.append(" AND f.videne_spolu = 1") else extraConditions.append(" AND f.videne_spolu = 0")
         if (year.isNotBlank()) {
             val parsed = parseYearFilter(year)
             if (parsed != null) {
@@ -416,6 +494,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         $genreFilterSql
         $extraConditions
         GROUP BY f.id_film
+        ORDER BY f.priorita DESC
     """.trimIndent()
 
         val args = (genreArgs + extraArgs).toTypedArray()
