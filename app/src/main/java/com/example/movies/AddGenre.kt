@@ -24,6 +24,7 @@ class AddGenre : Fragment() {
     private lateinit var genreAdapter: GenreAdapter
 
     private var newGenreType: String = ""
+    private var delGenreType: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +49,8 @@ class AddGenre : Fragment() {
         binding.addGenreBtn.setOnClickListener {
             if (newGenreType.isBlank()) {
                 binding.genreType.error
-                Toast.makeText(requireContext(), "Zadaj názov", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Zadaj typ", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
             if (dbHelper.addNewGenre(newGenreType)){
 
@@ -68,8 +70,32 @@ class AddGenre : Fragment() {
             binding.genreType.error
             Toast.makeText(requireContext(), "Žáner už existuje", Toast.LENGTH_LONG).show()
         }
+
+        binding.delGenreType.addTextChangedListener{ text -> delGenreType = text.toString() }
+
+        binding.delGenreBtn.setOnClickListener {
+            if (delGenreType.isBlank()){
+                binding.delGenreType.error
+                Toast.makeText(requireContext(), "Zadaj typ", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (dbHelper.delGenre(delGenreType)) {
+                binding.delGenreType.text.clear()
+
+                parentFragmentManager.beginTransaction()
+                    .detach(this)
+                    .commitNow()
+
+                parentFragmentManager.beginTransaction()
+                    .attach(this)
+                    .commit()
+
+                Toast.makeText(requireContext(), "Zmazané", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+        }
     }
-//    TODO del genre
 
     override fun onDestroyView() {
         super.onDestroyView()

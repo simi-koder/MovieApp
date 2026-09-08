@@ -18,23 +18,23 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_add_ganre"
+        android:orderInCategory="30"
+        android:title="Pridať / Odstrániť žáner"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_send_db"
         android:icon="@android:drawable/ic_menu_share"
-        android:orderInCategory="30"
+        android:orderInCategory="40"
         android:title="Zdieľať databázu"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_import_db"
         android:icon="@android:drawable/ic_menu_upload"
-        android:orderInCategory="40"
+        android:orderInCategory="50"
         android:title="Importovať databázu"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_add_ganre"
-        android:orderInCategory="40"
-        android:title="Pridať / Odstrániť žáner"
         app:showAsAction="never" />
 
 </menu>
