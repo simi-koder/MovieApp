@@ -40,7 +40,7 @@ class AddGenre : Fragment() {
         navController = findNavController()
         dbHelper = DatabaseHelper(requireContext())
 
-        genreAdapter = GenreAdapter(dbHelper.getAllGenres())
+        genreAdapter = GenreAdapter(dbHelper.getAllGenres(), dbHelper.getAllGenreIds())
         binding.recyclerViewGenre.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewGenre.adapter = genreAdapter
 

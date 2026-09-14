@@ -1,5 +1,6 @@
 package com.example.movies
 
+import android.R
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -71,17 +72,38 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
     }
 
+    fun getAllGenreIds(): List<Int> {
+        val db = getReadableDb()
+        val ids = mutableListOf<Int>()
+
+        val cursor = db.rawQuery("""
+            SELECT id_zaner FROM Zaner
+        """.trimIndent(), null)
+
+        cursor.use {
+            while (it.moveToNext()) {
+                ids.add(it.getInt(it.getColumnIndexOrThrow("id_zaner")))
+            }
+        }
+        db.close()
+        return ids
+    }
+
     fun editGenre(
         id: Int,
         name: String
-    ): Boolean {
+    ) {
         val db = getWritableDb()
 
-        val cursor = db.rawQuery("""
-            UPDATE Zaner SET typ = $name WHERE id_zaner = $id
-        """.trimIndent(), null)
+        Log.d("EDIT_GENRE","id: '$id'")
 
-        return (cursor.count > 0)
+        val contVals = ContentValues().apply {
+            put("typ", name)
+        }
+
+        db.update("Zaner", contVals, "id_zaner = $id", null)
+
+        db.close()
     }
 
     fun addNewGenre(
