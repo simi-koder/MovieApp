@@ -71,6 +71,19 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
     }
 
+    fun editGenre(
+        id: Int,
+        name: String
+    ): Boolean {
+        val db = getWritableDb()
+
+        val cursor = db.rawQuery("""
+            UPDATE Zaner SET typ = $name WHERE id_zaner = $id
+        """.trimIndent(), null)
+
+        return (cursor.count > 0)
+    }
+
     fun addNewGenre(
         type: String
     ): Boolean {
@@ -93,8 +106,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         db.close()
         return result > 0
     }
-
-//    TODO: delete genre
     fun delGenre(
         type: String
     ) : Boolean {
@@ -365,7 +376,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
         val cursor = db.rawQuery(
             """
-                SELECT typ
+                SELECT *
                 FROM Zaner
             """.trimIndent(),
             null
@@ -378,7 +389,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
                     it.getColumnIndexOrThrow("typ")
                 )
 
-                Log.d("DB_GENRE_DEBUG", "'$genre' len=${genre.length} codes=${genre.map { c -> c.code }}")
+                Log.d("DB_GENRE_DEBUG", "id: '${it.getString(it.getColumnIndexOrThrow("id_zaner"))}' | '$genre' len=${genre.length} codes=${genre.map { c -> c.code }}")
 
                 finalList.add(
                     genre

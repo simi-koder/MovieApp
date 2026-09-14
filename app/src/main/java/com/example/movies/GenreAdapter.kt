@@ -1,17 +1,25 @@
 package com.example.movies
 
+import android.content.Context
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.EditText
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 
 class GenreAdapter (
     private var genres: List<String>
 ) : RecyclerView.Adapter<GenreAdapter.GenreViewHolder>() {
+    private var editGenreText: String = ""
+
+    private lateinit var dbHelper: DatabaseHelper
 
     class GenreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemGenre: TextView = view.findViewById(R.id.itemGenre)
+        val itemGenre: EditText = view.findViewById(R.id.itemGenre)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
@@ -25,8 +33,18 @@ class GenreAdapter (
         position: Int
     ) {
         val genre = genres[position]
-        holder.itemGenre.text = genre
+        holder.itemGenre.setText(genre)
+
+        dbHelper = DatabaseHelper(holder.itemGenre.context)
+
+        holder.itemGenre.addTextChangedListener{ text ->
+            editGenreText = text.toString()
+        }
+//        TODO: toto pridat niekde plus check dbHelper asi zla query
+//        Log.d("EDIT_GENRE", "edited text: '$editGenreText'", null)
+//        dbHelper.editGenre(position, editGenreText)
     }
+
 
     override fun getItemCount(): Int = genres.size
 }

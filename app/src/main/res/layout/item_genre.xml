@@ -14,15 +14,18 @@
         android:padding="5dp"
         android:background="@color/secondary">
 
-        <TextView
+        <EditText
             android:id="@+id/itemGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="TextView"
             android:gravity="center"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="16dp"
             android:textStyle="bold"
+            android:inputType="text"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

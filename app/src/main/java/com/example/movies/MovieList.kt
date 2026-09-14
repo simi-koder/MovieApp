@@ -98,13 +98,11 @@ class MovieList : Fragment() {
 
         binding.deleteFilterBtn.setOnClickListener {
 
-            // vyresetuj textové polia
             binding.yearInput.text?.clear()
             binding.ratingInput.text?.clear()
             binding.directorText.text?.clear()
             binding.searchBarText.text?.clear()
 
-//            // vyresetuj checkboxy
             for (user in names){
                 user.isChecked = false
             }
@@ -112,12 +110,10 @@ class MovieList : Fragment() {
             binding.colorCheck.isChecked = false
             binding.grayscaleCheck.isChecked = false
 
-            // vyresetuj žánre
             selectedGenres = listOf()
             checkedGenres = BooleanArray(genres.size)
             binding.vyberZanre.text = "Vyber žánre"
 
-            // vyresetuj premenné pre text watchers
             yearInputText = ""
             ratingInputText = ""
             directorInputText = ""
