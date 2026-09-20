@@ -180,7 +180,7 @@ class MovieList : Fragment() {
                 val filteredMovies = dbHelper.getMoviesByFilters(
                     genreListRaw = selectedGenres,
                     seenUsers = videlUserIds,
-                    videneSpolu = videneSpolu,
+                    allSaw = videneSpolu,
                     year = yearInputText,
                     rating = ratingInputText,
                     color = color,

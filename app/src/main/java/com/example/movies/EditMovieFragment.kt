@@ -23,7 +23,7 @@ class EditMovieFragment : Fragment() {
 
     private val originalText = "Editovať film - "
 
-    private val sharedViewModel: SharedMoviesViewModel by activityViewModels()
+//    private val sharedViewModel: SharedMoviesViewModel by activityViewModels()
 
     private var selectedGenres = listOf<String>()
 
@@ -45,14 +45,14 @@ class EditMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movieTitle = arguments?.getString("movieTitle") ?: ""
+        val movieId = arguments?.getInt("movieId") ?: 0
 
         dbHelper = DatabaseHelper(requireContext())
 
         genres = dbHelper.getAllGenres().toTypedArray()
         checkedGenres = BooleanArray(genres.size)
 
-        val movieToEdit = updatePageTitle(originalText, movieTitle)
+        val movieToEdit = updatePageTitle(originalText, movieId)
 
         binding.editMovieBtn.setOnClickListener {
 
@@ -97,7 +97,7 @@ class EditMovieFragment : Fragment() {
                     rating = rating,
                     year = year,
                     genreIds = genreIds,
-                    videneSpolu = seenBoth,
+                    allSaw = seenBoth,
                     priority = priority,
                     color = color,
                     our_rating = ourRating,
@@ -123,40 +123,40 @@ class EditMovieFragment : Fragment() {
 
     }
 
-    fun updatePageTitle(defaultTitle: String, movieTitle: String): MovieFull {
+    fun updatePageTitle(defaultTitle: String, movieId: Int): MovieFull {
 
-        val matchedMovies = dbHelper.searchMovieByName(movieTitle, sharedViewModel.getCurrentMovies())
+        val matchedMovie = dbHelper.getMovieById(movieId)
 
         names = dbHelper.getUsers().toTypedArray()
         seenNamesBoolArray = BooleanArray(names.size)
 
-        if (matchedMovies.size != 1){
-            val message = if (matchedMovies.isEmpty())
-                "Film '$movieTitle' sa nenašiel"
-            else
-                "Nájdených viac filmov (${matchedMovies.size}) s názvom '$movieTitle', spresni výber"
+//        if (matchedMovies.size != 1){
+//            val message = if (matchedMovies.isEmpty())
+//                "Film '$movieTitle' sa nenašiel"
+//            else
+//                "Nájdených viac filmov (${matchedMovies.size}) s názvom '$movieTitle', spresni výber"
+//
+////            Log.e("EDIT_MOVIE", message)
+//            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+//
+//            findNavController().popBackStack()
+//        }
 
-//            Log.e("EDIT_MOVIE", message)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+//        val singleMatchedMovie: MovieFull = matchedMovie
 
-            findNavController().popBackStack()
-        }
+        selectedNames = dbHelper.getUserSeenMovie(matchedMovie.id)
 
-        val singleMatchedMovie: MovieFull = matchedMovies.first()
+        val editFilmTitle = matchedMovie.title
+        val editFilmYear = matchedMovie.year
+        val editFilmDirector = matchedMovie.director
+        val editFilmRating = matchedMovie.rating
+        val editFilmPriority = matchedMovie.priority
+        val editFilmColor =  matchedMovie.color
+        val editFilmSeenBoth =  matchedMovie.seen_both
+        val editFilmOurRating =  matchedMovie.our_rating
+        val editFilmDescription = matchedMovie.description
 
-        selectedNames = dbHelper.getUserSeenMovie(singleMatchedMovie.id)
-
-        val editFilmTitle = singleMatchedMovie.title
-        val editFilmYear = singleMatchedMovie.year
-        val editFilmDirector = singleMatchedMovie.director
-        val editFilmRating = singleMatchedMovie.rating
-        val editFilmPriority = singleMatchedMovie.priority
-        val editFilmColor =  singleMatchedMovie.color
-        val editFilmSeenBoth =  singleMatchedMovie.seen_both
-        val editFilmOurRating =  singleMatchedMovie.our_rating
-        val editFilmDescription = singleMatchedMovie.description
-
-        val editFilGenres = singleMatchedMovie.genre
+        val editFilGenres = matchedMovie.genre
             .map { it.trim() }
 
         selectedGenres = editFilGenres
@@ -220,7 +220,7 @@ class EditMovieFragment : Fragment() {
                 }
                 .show()
         }
-        return singleMatchedMovie
+        return matchedMovie
     }
 
 
