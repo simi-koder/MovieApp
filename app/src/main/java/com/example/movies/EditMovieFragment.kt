@@ -110,11 +110,9 @@ class EditMovieFragment : Fragment() {
 
                 withContext(Dispatchers.Main) {
                     if (success) {
-//                        Log.d("EDIT_MOVIE", "Film edited")
                         Toast.makeText(requireContext(), "Film zmenený", Toast.LENGTH_LONG).show()
-                        findNavController().popBackStack()
+                        parentFragmentManager.popBackStack()
                     } else {
-//                        Log.e("EDIT_MOVIE", "Edit zlyhal")
                         Toast.makeText(requireContext(), "Edit zlyhal", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -129,20 +127,6 @@ class EditMovieFragment : Fragment() {
 
         names = dbHelper.getUsers().toTypedArray()
         seenNamesBoolArray = BooleanArray(names.size)
-
-//        if (matchedMovies.size != 1){
-//            val message = if (matchedMovies.isEmpty())
-//                "Film '$movieTitle' sa nenašiel"
-//            else
-//                "Nájdených viac filmov (${matchedMovies.size}) s názvom '$movieTitle', spresni výber"
-//
-////            Log.e("EDIT_MOVIE", message)
-//            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-//
-//            findNavController().popBackStack()
-//        }
-
-//        val singleMatchedMovie: MovieFull = matchedMovie
 
         selectedNames = dbHelper.getUserSeenMovie(matchedMovie.id)
 

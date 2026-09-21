@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.view.isVisible
 
 class MovieList : Fragment() {
 
@@ -71,7 +72,7 @@ class MovieList : Fragment() {
 
         binding.textViewFilter.setOnClickListener {
             binding.filterOptions.visibility =
-                if (binding.filterOptions.visibility == View.VISIBLE) {
+                if (binding.filterOptions.isVisible) {
                     View.GONE
                 } else {
                     val userNames = dbHelper.getUsers()
@@ -166,7 +167,7 @@ class MovieList : Fragment() {
 
         binding.searchFilterBtn.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val videneSpolu = binding.videneSpoluCheck.isChecked
+                val allSaw = binding.videneSpoluCheck.isChecked
                 val color = binding.colorCheck.isChecked
                 val grayscale = binding.grayscaleCheck.isChecked
 
@@ -180,7 +181,7 @@ class MovieList : Fragment() {
                 val filteredMovies = dbHelper.getMoviesByFilters(
                     genreListRaw = selectedGenres,
                     seenUsers = videlUserIds,
-                    allSaw = videneSpolu,
+                    allSaw = allSaw,
                     year = yearInputText,
                     rating = ratingInputText,
                     color = color,

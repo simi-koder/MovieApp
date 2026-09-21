@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import java.io.FileOutputStream
 import java.text.Normalizer
+import kotlin.properties.Delegates
+
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        const val DB_NAME = "new2_database.db"
+        const val DB_NAME = "old_to_new.db"
         const val DB_VERSION = 1
     }
 
@@ -897,27 +899,21 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     }
 
     /**
-     * Deletes movie by title
-     * #### TODO change function to resolve title ambiguity
+     * Deletes movie by id from all tables
+     * @param id of movie to delete
      */
-    fun deleteMovie(title: String): Boolean {
+    fun deleteMovie(id: Int): Boolean {
         val db = getWritableDb()
 
         val cursor = db.rawQuery(
-            "SELECT id_film FROM Filmy WHERE nazov = ?",
-            arrayOf(title)
+            "SELECT id_film FROM Filmy WHERE id_film = ?",
+            arrayOf(id.toString())
         )
-
-        var movieId: Int? = null
+        var movieId by Delegates.notNull<Int>()
         cursor.use {
             if (it.moveToFirst()) {
                 movieId = it.getInt(it.getColumnIndexOrThrow("id_film"))
             }
-        }
-
-        if (movieId == null) {
-            db.close()
-            return false
         }
 
         db.delete("Videl", "id_film = ?", arrayOf(movieId.toString()))

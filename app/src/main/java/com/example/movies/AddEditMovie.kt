@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.properties.Delegates
 
 class AddEditMovie : Fragment() {
 
@@ -179,19 +180,35 @@ class AddEditMovie : Fragment() {
                 Toast.makeText(requireContext(), "Zadaj názov filmu", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-// TODO: REMAKE!!! to delete only one selected movie just like edit
-            val tempBool = dbHelper.deleteMovie(deleteMovieTitle)
 
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.Main) {
-                    if (tempBool) {
-//                        Log.d("DEL_MOVIE", "Film vymazany")
-                        Toast.makeText(requireContext(), "Film vymazaný", Toast.LENGTH_LONG).show()
-                        parentFragmentManager.popBackStack()
-                    } else {
-//                        Log.e("DEL_MOVIE", "Delete zlyhal")
-                        Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
+            val foundMovies = dbHelper.getMovieByTitle(deleteMovieTitle)
+
+            if (foundMovies.size > 1){
+
+                val titles = foundMovies.map { it.title }.toTypedArray()
+                var selectedId = 0
+
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Vyber 1 film")
+                    .setSingleChoiceItems(titles, selectedId) { _, which ->
+                        selectedId = which
                     }
+                    .setPositiveButton("OK") { _, _ ->
+                        if (dbHelper.deleteMovie(foundMovies[selectedId].id)) {
+                            Toast.makeText(requireContext(), "Film '${foundMovies[selectedId].title}' vymazaný", Toast.LENGTH_LONG).show()
+                            parentFragmentManager.popBackStack()
+                        } else {
+                            Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    .setNegativeButton("Zrušiť", null)
+                    .show()
+            } else {
+                if (dbHelper.deleteMovie(foundMovies.first().id)) {
+                    Toast.makeText(requireContext(), "Film '${foundMovies.first().title}' vymazaný", Toast.LENGTH_LONG).show()
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
                 }
             }
         }
