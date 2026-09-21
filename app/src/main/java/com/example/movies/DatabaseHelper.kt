@@ -60,7 +60,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     /**
      * Function parses year text with comparison symbols
      * @return Pair<String, Int> where String is the symbol and Int is the year value
-     ###### TODO: add span to viable string option
      */
     private fun parseYearFilter(input: String): Pair<String, Int>? {
         val trimmed = input.trim()
@@ -81,9 +80,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
     }
 
     /**
+     * Parses year as a span
+     * @param input string containing "-"
+     * @return Pair of two Integers <from, to>
+     */
+    private fun parseYearSpanFilter(input: String): Pair<Int, Int>? {
+
+        val matchedExpr = Regex("""^(\d{1,4})\s*-\s*(\d{1,4})$""").matchEntire(input.trim()) ?: return null
+
+        val firstInt = matchedExpr.groupValues[1].toIntOrNull() ?: return null
+        val secondInt = matchedExpr.groupValues[2].toIntOrNull() ?: return null
+
+        return minOf(firstInt, secondInt) to maxOf(firstInt, secondInt)
+    }
+
+    /**
      * Function parses rating text with comparison symbols
      * @return Pair<String, Int> where String is the symbol and Int is the rating
-    ###### TODO: add span to viable string option
      */
     private fun parseRatingFilter(input: String): Pair<String, Double>? {
         val trimmed = input.trim()
@@ -101,6 +114,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
             val rating = trimmed.toDoubleOrNull() ?: return null
             "=" to rating
         }
+    }
+
+    /**
+     * Parses rating as a span
+     * @param input string containing "-"
+     * @return Pair of two floats <from, to>
+     */
+    private fun parseRatingSpanFilter(input: String): Pair<Float, Float>? {
+        val matchedExpr =
+            Regex("""^(\d{1,2}(?:[.,]\d{1,2})?)\s*-\s*(\d{1,2}(?:[.,]\d{1,2})?)$""").matchEntire(input.trim()) ?: return null
+
+        Log.d("PARSE_SPAN", "regex matched")
+
+        val firstFloat = matchedExpr.groupValues[1].toFloatOrNull() ?: return null
+        Log.d("PARSE_SPAN", "first passed")
+        val secondFloat = matchedExpr.groupValues[2].toFloatOrNull() ?: return null
+        Log.d("PARSE_SPAN", "second passed")
+
+        return minOf(firstFloat, secondFloat) to maxOf(firstFloat, secondFloat)
     }
 
     /**
@@ -719,19 +751,39 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
         if (allSaw) extraConditions.append(" AND f.videne_spolu = 1") else extraConditions.append(" AND f.videne_spolu = 0")
         if (year.isNotBlank()) {
-            val parsed = parseYearFilter(year)
-            if (parsed != null) {
-                val (op, yearValue) = parsed
-                extraConditions.append(" AND f.rok_vydania $op ?")
-                extraArgs.add(yearValue.toString())
+            if (!year.contains("-")) {
+                val parsed = parseYearFilter(year)
+                if (parsed != null) {
+                    val (op, yearValue) = parsed
+                    extraConditions.append(" AND f.rok_vydania $op ?")
+                    extraArgs.add(yearValue.toString())
+                }
+            } else {
+                val parsedYear = parseYearSpanFilter(year)
+                if (parsedYear != null) {
+                    extraConditions.append(" AND f.rok_vydania BETWEEN ? AND ?")
+                    extraArgs.add(parsedYear.first.toString())
+                    extraArgs.add(parsedYear.second.toString())
+                }
             }
         }
         if (rating.isNotBlank()) {
-            val parsedRating = parseRatingFilter(rating)
-            if (parsedRating != null) {
-                val (op1, ratingValue) = parsedRating
-                extraConditions.append(" AND f.hodnotenie $op1 ?")
-                extraArgs.add(ratingValue.toString())
+            if (!rating.contains("-")) {
+                Log.d("RATING_DEBUG", "does not contain '-': $rating")
+                val parsedRating = parseRatingFilter(rating)
+                if (parsedRating != null) {
+                    val (op1, ratingValue) = parsedRating
+                    extraConditions.append(" AND f.hodnotenie $op1 ?")
+                    extraArgs.add(ratingValue.toString())
+                }
+            } else {
+                Log.d("RATING_DEBUG", "contains '-' : $rating")
+                val parsedRating = parseRatingSpanFilter(rating)
+                if (parsedRating != null) {
+                    extraConditions.append(" AND f.hodnotenie BETWEEN ? AND ?")
+                    extraArgs.add(parsedRating.first.toString())
+                    extraArgs.add(parsedRating.second.toString())
+                }
             }
         }
 
