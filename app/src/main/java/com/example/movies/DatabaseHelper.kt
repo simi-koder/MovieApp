@@ -12,7 +12,7 @@ import kotlin.properties.Delegates
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     companion object {
-        const val DB_NAME = "old_to_new.db"
+        const val DB_NAME = "new2_database.db"
         const val DB_VERSION = 1
     }
 
@@ -702,6 +702,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
      * @param genreListRaw list of genre types, movie must include at least one
      * @param seenUsers list of user ids that seen the movie
      * @param allSaw check if all users have seen the move
+     * @param allMovies retrieves all movies even if any user have seen any of them
      * @param year of publication with comparison symbols
      * @param rating with comparison symbols
      * @param color boolean is movie colored?
@@ -713,6 +714,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         genreListRaw: List<String>,
         seenUsers: List<Int> = emptyList(),
         allSaw: Boolean = false,
+        allMovies: Boolean = false,
         year: String = "",
         rating: String = "",
         color: Boolean = false,
@@ -728,28 +730,35 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null
 
         val extraConditions = StringBuilder()
 
-        if (seenUsers.isNotEmpty()) {
-            val placeholders = seenUsers.joinToString(",") { "?" }
-            extraConditions.append("""
-                AND f.id_film IN (
-                    SELECT Videl.id_film
-                    FROM Videl
-                    WHERE Videl.id_user IN ($placeholders)
-                    GROUP BY Videl.id_film
-                    HAVING COUNT(DISTINCT Videl.id_user) = ${seenUsers.size}
-                )
-            """.trimIndent())
-            extraArgs.addAll(seenUsers.map { it.toString() })
-        } else {
-            extraConditions.append("""
-                AND f.id_film NOT IN (
-                    SELECT Videl.id_film
-                    FROM Videl
-                )
-            """.trimIndent())
+        if (!allMovies) {
+            if (allSaw) extraConditions.append(" AND f.videne_spolu = 1") else {
+                if (seenUsers.isNotEmpty()) {
+                    val placeholders = seenUsers.joinToString(",") { "?" }
+                    extraConditions.append(
+                        """
+                    AND f.id_film IN (
+                        SELECT Videl.id_film
+                        FROM Videl
+                        WHERE Videl.id_user IN ($placeholders)
+                        GROUP BY Videl.id_film
+                        HAVING COUNT(DISTINCT Videl.id_user) = ${seenUsers.size}
+                    )
+                """.trimIndent()
+                    )
+                    extraArgs.addAll(seenUsers.map { it.toString() })
+                } else {
+                    extraConditions.append(
+                        """
+                    AND f.id_film NOT IN (
+                        SELECT Videl.id_film
+                        FROM Videl
+                    )
+                """.trimIndent()
+                    )
+                }
+            }
         }
 
-        if (allSaw) extraConditions.append(" AND f.videne_spolu = 1") else extraConditions.append(" AND f.videne_spolu = 0")
         if (year.isNotBlank()) {
             if (!year.contains("-")) {
                 val parsed = parseYearFilter(year)

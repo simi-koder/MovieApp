@@ -71,7 +71,7 @@ import java.io.FileOutputStream
         }
 
         private fun exportDatabase() {
-            val dbFile = getDatabasePath("old_to_new.db")
+            val dbFile = getDatabasePath("new2_database.db")
             val dbUri = FileProvider.getUriForFile(
                 this,
                 "$packageName.provider",

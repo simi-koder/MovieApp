@@ -91,6 +91,7 @@ class MovieList : Fragment() {
 
                     if (userNames.size >= 2) {
                         binding.videneSpoluCheck.visibility = View.VISIBLE
+                        binding.allMoviesCheck.visibility = View.VISIBLE
                     }
                     View.VISIBLE
                 }
@@ -108,6 +109,7 @@ class MovieList : Fragment() {
                 user.isChecked = false
             }
             binding.videneSpoluCheck.isChecked = false
+            binding.allMoviesCheck.isChecked = false
             binding.colorCheck.isChecked = false
             binding.grayscaleCheck.isChecked = false
 
@@ -168,6 +170,7 @@ class MovieList : Fragment() {
         binding.searchFilterBtn.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 val allSaw = binding.videneSpoluCheck.isChecked
+                val allMovies = binding.allMoviesCheck.isChecked
                 val color = binding.colorCheck.isChecked
                 val grayscale = binding.grayscaleCheck.isChecked
 
@@ -182,6 +185,7 @@ class MovieList : Fragment() {
                     genreListRaw = selectedGenres,
                     seenUsers = videlUserIds,
                     allSaw = allSaw,
+                    allMovies = allMovies,
                     year = yearInputText,
                     rating = ratingInputText,
                     color = color,

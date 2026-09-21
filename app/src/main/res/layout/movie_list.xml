@@ -86,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewFilter">
@@ -218,11 +218,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Videné spolu"
-                android:visibility="gone"
+                android:visibility="visible"
+                android:textColor="@color/white"
+                app:buttonTint="@color/checkbox_color_selector"
+                app:layout_constraintEnd_toStartOf="@id/allMoviesCheck"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videl10" />
+
+            <CheckBox
+                android:id="@+id/allMoviesCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Všetko"
+                android:visibility="visible"
                 android:textColor="@color/white"
                 app:buttonTint="@color/checkbox_color_selector"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/videneSpoluCheck"
                 app:layout_constraintTop_toBottomOf="@+id/videl10" />
 
             <Button
