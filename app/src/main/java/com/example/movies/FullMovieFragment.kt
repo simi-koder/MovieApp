@@ -37,19 +37,21 @@ class FullMovieFragment : Fragment() {
         val names = listOf(binding.videl1, binding.videl2, binding.videl3, binding.videl4, binding.videl5,
             binding.videl6, binding.videl7, binding.videl8, binding.videl9, binding.videl10)
 
-        val movie: MovieFull? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable("movie", MovieFull::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getSerializable("movie") as? MovieFull
-        }
+//        val movie: MovieFull? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            arguments?.getSerializable("movie", MovieFull::class.java)
+//        } else {
+//            @Suppress("DEPRECATION")
+//            arguments?.getSerializable("movie") as? MovieFull
+//        }
+        @Suppress("DEPRECATION")
+        val movie: MovieFull = arguments?.getSerializable("movie") as MovieFull
 
-        binding.fullMovieTitle.text = movie?.title
-        binding.fullMovieYear.text = movie?.year.toString()
-        binding.fullMovieDirector.text = movie?.director
+        binding.fullMovieTitle.text = movie.title
+        binding.fullMovieYear.text = movie.year.toString()
+        binding.fullMovieDirector.text = movie.director
         val allUsers = dbHelper.getUsers()
 
-        val usersThatSeen = if (movie != null) dbHelper.getUserSeenMovie(movie.id) else emptyList()
+        val usersThatSeen = dbHelper.getUserSeenMovie(movie.id)
 
         allUsers.forEachIndexed { index, string ->
             val curr = names[index]
@@ -60,18 +62,18 @@ class FullMovieFragment : Fragment() {
         }
 
         if (allUsers.size >= 2) {
-            binding.videneSpoluCheck.isChecked = movie?.seen_both ?: false
+            binding.videneSpoluCheck.isChecked = movie.seen_both
             binding.videneSpoluCheck.visibility = View.VISIBLE
             binding.videneSpoluCheck.isEnabled = false
         }
 
-        binding.fullMovieGenres.text = movie?.genre?.joinToString(", ")
-        binding.fullMovieRating.text = "Hodnotenie - " + movie?.rating.toString()
-        binding.fullMovieOurRating.text = "Naše hodnotenie - " + movie?.our_rating.toString()
-        binding.fullMoviePriority.text = "Priorita - " + movie?.priority.toString()
-        binding.fullMovieColor.isChecked = movie?.color ?: false
+        binding.fullMovieGenres.text = movie.genre.joinToString(", ")
+        binding.fullMovieRating.text = "Hodnotenie - " + movie.rating.toString()
+        binding.fullMovieOurRating.text = "Naše hodnotenie - " + movie.our_rating.toString()
+        binding.fullMoviePriority.text = "Priorita - " + movie.priority.toString()
+        binding.fullMovieColor.isChecked = movie.color
         binding.fullMovieColor.isEnabled = false
-        if (!movie?.description.isNullOrEmpty()) {
+        if (movie.description.isNotEmpty()) {
             binding.descriptionPlaceholder.visibility = View.VISIBLE
             binding.descriptionPlaceholder.text = movie.description
         } else {
@@ -80,7 +82,7 @@ class FullMovieFragment : Fragment() {
 
         binding.editMovieBtnDetail.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("movieTitle", movie?.title)
+                putInt("movieId", movie.id)
             }
 
             navController.navigate(R.id.EditMovieFragment, bundle)

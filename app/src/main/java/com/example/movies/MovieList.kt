@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.view.isVisible
 
 class MovieList : Fragment() {
 
@@ -71,7 +72,7 @@ class MovieList : Fragment() {
 
         binding.textViewFilter.setOnClickListener {
             binding.filterOptions.visibility =
-                if (binding.filterOptions.visibility == View.VISIBLE) {
+                if (binding.filterOptions.isVisible) {
                     View.GONE
                 } else {
                     val userNames = dbHelper.getUsers()
@@ -90,6 +91,7 @@ class MovieList : Fragment() {
 
                     if (userNames.size >= 2) {
                         binding.videneSpoluCheck.visibility = View.VISIBLE
+                        binding.allMoviesCheck.visibility = View.VISIBLE
                     }
                     View.VISIBLE
                 }
@@ -98,26 +100,23 @@ class MovieList : Fragment() {
 
         binding.deleteFilterBtn.setOnClickListener {
 
-            // vyresetuj textové polia
             binding.yearInput.text?.clear()
             binding.ratingInput.text?.clear()
             binding.directorText.text?.clear()
             binding.searchBarText.text?.clear()
 
-//            // vyresetuj checkboxy
             for (user in names){
                 user.isChecked = false
             }
             binding.videneSpoluCheck.isChecked = false
+            binding.allMoviesCheck.isChecked = false
             binding.colorCheck.isChecked = false
             binding.grayscaleCheck.isChecked = false
 
-            // vyresetuj žánre
             selectedGenres = listOf()
             checkedGenres = BooleanArray(genres.size)
             binding.vyberZanre.text = "Vyber žánre"
 
-            // vyresetuj premenné pre text watchers
             yearInputText = ""
             ratingInputText = ""
             directorInputText = ""
@@ -170,7 +169,8 @@ class MovieList : Fragment() {
 
         binding.searchFilterBtn.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val videneSpolu = binding.videneSpoluCheck.isChecked
+                val allSaw = binding.videneSpoluCheck.isChecked
+                val allMovies = binding.allMoviesCheck.isChecked
                 val color = binding.colorCheck.isChecked
                 val grayscale = binding.grayscaleCheck.isChecked
 
@@ -184,7 +184,8 @@ class MovieList : Fragment() {
                 val filteredMovies = dbHelper.getMoviesByFilters(
                     genreListRaw = selectedGenres,
                     seenUsers = videlUserIds,
-                    videneSpolu = videneSpolu,
+                    allSaw = allSaw,
+                    allMovies = allMovies,
                     year = yearInputText,
                     rating = ratingInputText,
                     color = color,

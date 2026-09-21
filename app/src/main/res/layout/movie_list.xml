@@ -221,8 +221,20 @@
                 android:visibility="gone"
                 android:textColor="@color/white"
                 app:buttonTint="@color/checkbox_color_selector"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/allMoviesCheck"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videl10" />
+
+            <CheckBox
+                android:id="@+id/allMoviesCheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Všetko"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                app:buttonTint="@color/checkbox_color_selector"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/videneSpoluCheck"
                 app:layout_constraintTop_toBottomOf="@+id/videl10" />
 
             <Button
@@ -230,7 +242,7 @@
                 android:layout_width="0dp"
                 android:layout_height="44dp"
                 android:layout_marginTop="12dp"
-                android:text="Vybrať žánre"
+                android:text="Vyber žánre"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
