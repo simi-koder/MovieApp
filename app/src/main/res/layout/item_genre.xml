@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
@@ -14,17 +15,44 @@
         android:padding="5dp"
         android:background="@color/secondary">
 
-        <TextView
+        <EditText
             android:id="@+id/itemGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="TextView"
             android:gravity="center"
+            android:inputType="text"
+            android:maxLines="1"
+            android:text="TextView"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="16dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/editGenreBtn"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/editGenreBtn"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:visibility="gone"
+            app:srcCompat="?android:attr/textCheckMark"
+            tools:layout_editor_absoluteX="241dp"
+            tools:layout_editor_absoluteY="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/itemGenre"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/genreID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/itemGenre"
+            app:layout_constraintStart_toStartOf="@+id/itemGenre"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

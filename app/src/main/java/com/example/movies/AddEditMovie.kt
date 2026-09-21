@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.properties.Delegates
 
 class AddEditMovie : Fragment() {
 
@@ -149,7 +150,7 @@ class AddEditMovie : Fragment() {
                     rating = ratingInputText,
                     year = yearInputText,
                     genreIds = genreIds,
-                    videneSpolu = seenBoth,
+                    allSaw = seenBoth,
                     priority = priorityInputText,
                     color = clr,
                     description = descriptionText,
@@ -180,18 +181,34 @@ class AddEditMovie : Fragment() {
                 return@setOnClickListener
             }
 
-            val tempBool = dbHelper.deleteMovie(deleteMovieTitle)
+            val foundMovies = dbHelper.getMovieByTitle(deleteMovieTitle)
 
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.Main) {
-                    if (tempBool) {
-//                        Log.d("DEL_MOVIE", "Film vymazany")
-                        Toast.makeText(requireContext(), "Film vymazaný", Toast.LENGTH_LONG).show()
-                        parentFragmentManager.popBackStack()
-                    } else {
-//                        Log.e("DEL_MOVIE", "Delete zlyhal")
-                        Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
+            if (foundMovies.size > 1){
+
+                val titles = foundMovies.map { it.title }.toTypedArray()
+                var selectedId = 0
+
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Vyber 1 film")
+                    .setSingleChoiceItems(titles, selectedId) { _, which ->
+                        selectedId = which
                     }
+                    .setPositiveButton("OK") { _, _ ->
+                        if (dbHelper.deleteMovie(foundMovies[selectedId].id)) {
+                            Toast.makeText(requireContext(), "Film '${foundMovies[selectedId].title}' vymazaný", Toast.LENGTH_LONG).show()
+                            parentFragmentManager.popBackStack()
+                        } else {
+                            Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    .setNegativeButton("Zrušiť", null)
+                    .show()
+            } else {
+                if (dbHelper.deleteMovie(foundMovies.first().id)) {
+                    Toast.makeText(requireContext(), "Film '${foundMovies.first().title}' vymazaný", Toast.LENGTH_LONG).show()
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(requireContext(), "Vymazanie zlyhalo", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -202,17 +219,38 @@ class AddEditMovie : Fragment() {
 
         binding.editMovieBtn.setOnClickListener {
             if (editMovieInputText.isBlank()) {
-//                binding.editMovieTitle.error = "Zadaj názov filmu"
                 Toast.makeText(requireContext(), "Zadaj názov filmu", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            val bundle = Bundle().apply {
-                putString("movieTitle", editMovieInputText)
+            val strippedTitle = dbHelper.removeDiacritics(editMovieInputText)
+            val matchedMovies: List<MovieFull> = dbHelper.getMovieByTitle(title=strippedTitle)
+
+            val titles = matchedMovies
+                .map { it.title }
+                .toTypedArray()
+            var selectedIndex = 0
+
+            if (matchedMovies.size > 1){
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Vyber 1 film")
+                    .setSingleChoiceItems(titles, selectedIndex) { _, which ->
+                        selectedIndex = which
+                    }
+                    .setPositiveButton("OK") { _, _ ->
+                        val bundle = Bundle().apply {
+                            putInt("movieId", matchedMovies[selectedIndex].id)
+                        }
+                        navController.navigate(R.id.EditMovieFragment, bundle)
+                    }
+                    .setNegativeButton("Zrušiť", null)
+                    .show()
+            } else {
+                val bundle = Bundle().apply {
+                    putInt("movieId", matchedMovies.first().id)
+                }
+                navController.navigate(R.id.EditMovieFragment, bundle)
             }
-
-            navController.navigate(R.id.EditMovieFragment, bundle)
-
         }
 
     }

@@ -1,26 +1,26 @@
 package com.example.movies
 
-    import android.annotation.SuppressLint
-    import android.content.Intent
-    import android.net.Uri
-    import android.os.Bundle
-    import androidx.appcompat.app.AppCompatActivity
-    import androidx.activity.enableEdgeToEdge
-    import androidx.core.view.ViewCompat
-    import androidx.core.view.WindowInsetsCompat
-    import androidx.navigation.findNavController
-    import androidx.navigation.fragment.NavHostFragment
-    import androidx.navigation.ui.AppBarConfiguration
-    import androidx.navigation.ui.navigateUp
-    import androidx.navigation.ui.setupActionBarWithNavController
-    import android.view.Menu
-    import android.view.MenuItem
-    import android.widget.Toast
-    import androidx.activity.result.contract.ActivityResultContracts
-    import androidx.core.content.FileProvider
-    import androidx.navigation.NavController
-    import com.example.movies.databinding.ActivityMainBinding
-    import java.io.FileOutputStream
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import androidx.navigation.NavController
+import com.example.movies.databinding.ActivityMainBinding
+import java.io.FileOutputStream
 
 
 @SuppressLint("WrongViewCast")
